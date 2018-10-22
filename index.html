@@ -1,0 +1,257 @@
+<!-- Some examples -->
+<!-- https://developers.arcgis.com/labs/javascript/display-a-web-map/ -->
+<!-- http://eu-commission.maps.arcgis.com/apps/Cascade/index.html?appid=dc1ec0acb885450e829758df905f4c7e -->
+<!-- https://storymaps.esri.com/stories/2018/anthropocene/2-the-land.html -->
+<!-- https://storymaps.arcgis.com/en/gallery/#s=0 -->
+<!-- https://developers.arcgis.com/javascript/latest/sample-code/sandbox/index.html?sample=featurelayerview-query-stats&fbclid=IwAR2ExsNaDCK-vSr6mj6siJC1wW-rAUy8yTJEPPu6BBbF9uEY_18xlfIA4-k -->
+<!-- Precipitation data: Warning: Huge file: http://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NCEP/.CPC/.CAMS_OPI/.v0208/.anomaly/.prcp/T/(days%20since%201960-01-01)streamgridunitconvert/T/differential_mul/T/(months%20since%201960-01-01)streamgridunitconvert//units/(mm/month)def//long_name/(Precipitation%20Anomaly)def/DATA/-500/-450/-400/-350/-300/-250/-200/-150/-100/-50/-25/25/50/100/150/200/250/300/350/400/450/500/VALUES/prcp_anomaly_max500_colors2/ngridtable/4+ncoltable.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://js.arcgis.com/4.9/esri/css/main.css">
+    <script src="https://js.arcgis.com/4.9/"></script>
+    <title>A JavaScript starter app</title>
+    <style>
+      html, body, #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+    <script>
+	  require([
+	      "esri/Map",
+	      "esri/views/MapView",
+	      "esri/layers/FeatureLayer",
+	      "esri/tasks/support/Query",
+		  "esri/tasks/QueryTask",
+		  "esri/Graphic",
+	      "dojo/domReady!"
+	    ], function(Map, MapView, FeatureLayer, Query, QueryTask, Graphic) {
+
+	    var map = new Map({
+	      basemap: "oceans"
+	      //basemap: "topo-vector"
+	    });
+
+	    var view = new MapView({
+	      container: "viewDiv",
+	      map: map,
+	      center: [-118.71511,34.09042],
+	      zoom: 10, //3
+
+	      popup: {
+	      	dockEnabled: true,
+	      	dockOptions: {
+	      		buttonEnabled: false,
+	      		breakpoint: false
+	      	}
+	      }
+	    });
+
+	    // Define a simple renderer and symbol
+		var trailheadsRenderer = {
+		  "type": "simple",
+		  "symbol": {
+		    "type": "picture-marker",
+		    "url": "http://static.arcgis.com/images/Symbols/NPS/npsPictograph_0231b.png",
+		    "width": 10.5,
+		    "height": 10.5
+		  }
+		}
+
+		// Define query SQL expression
+		  var query = new Query();
+		  query.where = "PARK_NAME like '%State Park%'"
+		  query.outFields = ["*"];
+		  query.returnGeometry = true;
+
+		// Define the query task
+		  var queryTask = new QueryTask({
+		    url: "https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Parks_and_Open_Space/FeatureServer/0"
+		  });
+
+		  // Execute the query
+		  queryTask.execute(query)
+		    .then(function(result){
+		      console.log(result.features.length)
+
+		      //*** ADD ***//
+		      result.features.forEach(function(item){
+		         var g = new Graphic({
+		           geometry: item.geometry,
+		           attributes: item.attributes,
+		           symbol: {
+		             type: "simple-line",
+		             color: "black",
+		             width: 1.2,
+		             style: "short-dot"
+		           },
+		           popupTemplate: {
+		             title: "{PARK_NAME}",
+		             content: "{*}"  // All of the fields
+		           }
+		         });
+		         view.graphics.add(g);
+		      });
+
+		      // Zoom to the features
+		      view.goTo({
+		        target: view.graphics
+		      });
+
+		     })
+		    .otherwise(function(e){
+		      console.log(e);
+		    });
+
+		// Define a unique value renderer and symbols
+		var openSpacesRenderer = {
+		    "type": "class-breaks",
+		    "field": "GIS_ACRES",
+		    "classBreakInfos": [
+		      {
+		        "symbol": {
+		          "color": [
+		            193,157,188,255
+		          ],
+		          "outline": {
+		            "width": 0
+		          },
+		          "type": "simple-fill",
+		          "style": "solid"
+		        },
+		        "label": "0 to 1,629",
+		        "minValue": 0,
+		        "maxValue": 1629
+		      },
+		      {
+		        "symbol": {
+		          "color": [
+		            203,216,162,255
+		          ],
+		          "outline": {
+		            "width": 0
+		          },
+		          "type": "simple-fill",
+		          "style": "solid"
+		        },
+		        "label": "> 1,629 to 3,754",
+		        "minValue": 1629,
+		        "maxValue": 3754
+		      },
+		      {
+		        "symbol": {
+		          "color": [
+		            144,198,120,255
+		          ],
+		          "outline": {
+		            "width": 0
+		          },
+		          "type": "simple-fill",
+		          "style": "solid"
+		        },
+		        "label": "> 3,754 to 11,438",
+		        "minValue": 3754,
+		        "maxValue": 11438
+		      }
+		    ]
+		  }
+
+		// Define popup for Parks and Open Spaces
+		  var popupOpenspaces = {
+		    "title": "{PARK_NAME}",
+		    "content": [{
+		      "type": "fields",
+		      "fieldInfos": [
+		        {
+		          "fieldName": "AGNCY_NAME",
+		          "label": "Agency",
+		          "isEditable": true,
+		          "tooltip": "",
+		          "visible": true,
+		          "format": null,
+		          "stringFieldOption": "textbox"
+		        },
+		        {
+		          "fieldName": "TYPE",
+		          "label": "Type",
+		          "isEditable": true,
+		          "tooltip": "",
+		          "visible": true,
+		          "format": null,
+		          "stringFieldOption": "textbox"
+		        },
+		        {
+		          "fieldName": "ACCESS_TYP",
+		          "label": "Access",
+		          "isEditable": true,
+		          "tooltip": "",
+		          "visible": true,
+		          "format": null,
+		          "stringFieldOption": "textbox"
+		        },
+		        {
+		          "fieldName": "RPT_ACRES",
+		          "label": "Acres (reported)",
+		          "isEditable": true,
+		          "tooltip": "",
+		          "visible": true,
+		          "format": {
+		            "places": 2,
+		            "digitSeparator": true
+		          },
+		          "stringFieldOption": "textbox"
+		        },
+		        {
+		          "fieldName": "GIS_ACRES",
+		          "label": "Acres",
+		          "isEditable": true,
+		          "tooltip": "",
+		          "visible": true,
+		          "format": {
+		            "places": 2,
+		            "digitSeparator": true
+		          },
+		          "stringFieldOption": "textbox"
+		        }
+		      ]
+		    },{
+	    	type: "media",
+		    mediaInfos: [{
+		      title: "<b>Park Rating</b>",
+		      type: "pie-chart",
+		      caption: "",
+		      value: {
+		        theme: "Grasshopper",
+		        fields: [ "RPT_ACRES", "GIS_ACRES" ],
+		        normalizeField: null
+		        //tooltipField: "Rating"
+		      }
+		    }]
+		    }
+
+		    ],
+		  }
+
+	    // Trailheads point feature layer
+	    // there is also a CSV layer
+	    // https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-CSVLayer.html
+	  	var featureLayer = new FeatureLayer({
+	    	url: "https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Parks_and_Open_Space/FeatureServer/0",
+	    	renderer: openSpacesRenderer,
+	    	outFields: ["*"],
+            popupTemplate: popupOpenspaces
+	  	});
+
+	  	map.add(featureLayer);
+	  });
+	</script>
+  </head>
+  <body>
+    <div id="viewDiv"></div>
+  </body>
+</html>
