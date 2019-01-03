@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8' />
+		<title>NOAH | Map View</title>
+		<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+		<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
+		<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css' rel='stylesheet' />
+		<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+		<style>
+			body { margin:0; padding:0; }
+			#map { position:absolute; top:0; bottom:0; width:100%; }
+		</style>
+		<script src="d3v4+jetpack.js"></script>
+	</head>
+
+	<body>
+		<style>
+		    #zoomButton {
+		        display: block;
+		        position: relative;
+		        margin: 0px auto;
+		        width: 50%;
+		        height: 40px;
+		        padding: 10px;
+		        border: none;
+		        border-radius: 3px;
+		        font-size: 12px;
+		        text-align: center;
+		        color: #fff;
+		        background: #ee8a65;
+		    }
+		</style>
+		<div id='map'></div>
+		<br/>
+		<button id="zoomButton" class="zoom-button">Zoom Out</button>
+		<script src="mapbox.js"></script>
+	</body>
+</html>
