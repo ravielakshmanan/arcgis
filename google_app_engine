@@ -23,3 +23,6 @@ gcloud app create
 
 gcloud app deploy app.yaml --project magicgrant
 
+Setting CORS:
+gsutil cors set cors-json-file.json gs://iridatacsv
+gsutil cors get gs://iridatacsv

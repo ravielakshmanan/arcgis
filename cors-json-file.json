@@ -1,8 +1,12 @@
-// gsutil cors set cors-json-file.json gs://iridatacsv
-// gsutil cors get gs://iridatacsv
 [
     {
-      "origin": ["http://example.appspot.com"],
+      "origin": ["http://magicgrant.appspot.com"],
+      "responseHeader": ["Content-Type"],
+      "method": ["GET", "HEAD", "DELETE"],
+      "maxAgeSeconds": 3600
+    },
+    {
+      "origin": ["https://magicgrant.appspot.com"],
       "responseHeader": ["Content-Type"],
       "method": ["GET", "HEAD", "DELETE"],
       "maxAgeSeconds": 3600
