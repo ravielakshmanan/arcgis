@@ -12,9 +12,5 @@ def render_map():
 	return render_template("mapbox.html")
 
 if __name__ == '__main__':
-   #  app.run(host=os.getenv('IP'),
-   #          port=os.getenv('PORT'),
-			# debug=True)
-	with app.test_request_context():
-		print(url_for('render_map'))
-		app.run(host='127.0.0.1', port=8080, debug=True)
+   app.run(host='127.0.0.1', port=8080, debug=True)
+   # app.run(host='0.0.0.0', port=8080, debug=True)
