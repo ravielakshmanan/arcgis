@@ -3,7 +3,7 @@ var zooming = false;
 var coords;
 var data = [];
 
-d3.csv("transposed.csv", function(readdata) {
+d3.csv("gs://iridatacsv/transposed.csv", function(readdata) {
     data = readdata;
     console.log("Data Read!");
     console.log(data.length);
