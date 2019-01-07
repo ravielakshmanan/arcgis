@@ -1,0 +1,24 @@
+Render HTML in Python: 
+https://programminghistorian.org/en/lessons/creating-and-viewing-html-files-with-python
+https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xx-some-javascript-magic
+
+git clone https://github.com/GoogleCloudPlatform/python-docs-samples
+
+cd python-docs-samples/appengine/standard_python37/hello_world
+
+cat main.py
+
+cat app.yaml
+
+virtualenv --python python3 ~/envs/noah
+
+source ~/envs/noah/bin/activate
+
+pip install -r requirements.txt
+
+python app.py
+
+gcloud app create
+
+gcloud app deploy app.yaml --project magicgrant
+

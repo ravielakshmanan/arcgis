@@ -7,8 +7,8 @@
 
   <!-- CSS  -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="{{ url_for('static', filename='css/materialize.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="{{ url_for('static', filename='css/style.css')}} " type="text/css" rel="stylesheet" media="screen,projection"/>
   <style type="text/css">
     .list-inline {
       padding-left: 0;
@@ -44,7 +44,7 @@
   </nav>
 
   <div id="index-banner" class="parallax-container">
-    <div class="parallax"><img src="images/Precipitation_longterm_mean.gif" alt="Unsplashed background img 1"></div>
+    <div class="parallax"><img src="/static/images/Precipitation_longterm_mean.gif" alt="Unsplashed background img 1"></div>
   </div>
 
   <div class="container" id="about">
@@ -57,6 +57,10 @@
           <p class="left-align light">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque id nunc nec volutpat. Etiam pellentesque tristique arcu, non consequat magna fermentum ac. Cras ut ultricies eros. Maecenas eros justo, ullamcorper a sapien id, viverra ultrices eros. Morbi sem neque, posuere et pretium eget, bibendum sollicitudin lacus. Aliquam eleifend sollicitudin diam, eu mattis nisl maximus sed. Nulla imperdiet semper molestie. Morbi massa odio, condimentum sed ipsum ac, gravida ultrices erat. Nullam eget dignissim mauris, non tristique erat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;</p>
         </div>
       </div>
+
+      <div class="row center">
+          <a href="{{ url_for('render_map') }}" class="waves-effect waves-light btn-large"><i class="material-icons right">map</i>Render Map</a>
+        </div>
 
     </div>
   </div>
@@ -105,7 +109,7 @@
         </div>
       </div>
     </div>
-    <div class="parallax"><img src="images/Dec_2018_Anomaly.gif" alt="Unsplashed background img 2"></div>
+    <div class="parallax"><img src="/static/images/Dec_2018_Anomaly.gif" alt="Unsplashed background img 2"></div>
   </div>
 
   <div class="container" id="team">
@@ -123,7 +127,7 @@
   </div>
 
   <div class="parallax-container valign-wrapper">
-    <div class="parallax"><img src="images/Dec_2018_Anomaly.gif" alt="Unsplashed background img 2"></div>
+    <div class="parallax"><img src="/static/images/Dec_2018_Anomaly.gif" alt="Unsplashed background img 2"></div>
   </div>
 
   <div class="container" id="contact">
@@ -142,7 +146,7 @@
 
 
   <div class="parallax-container valign-wrapper">
-    <div class="parallax"><img src="images/background3.jpg" alt="Unsplashed background img 3"></div>
+    <div class="parallax"><img src="/static/images/background3.jpg" alt="Unsplashed background img 3"></div>
   </div>
 
   <footer class="page-footer teal">
@@ -178,8 +182,8 @@
 
   <!--  Scripts-->
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script src="js/materialize.js"></script>
-  <script src="js/init.js"></script>
+  <script src="{{ url_for('static', filename='js/materialize.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/init.js') }}"></script>
 
   </body>
 </html>
