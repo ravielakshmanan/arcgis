@@ -1,9 +1,9 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFua2h1cmlrdW1hciIsImEiOiJjamZwbnV2OTcxdXB1MzBudnViY2p3aDEzIn0.Zf9ZkY05gz_Zsyen1W1FbA';
 var zooming = false;
-var coords;
+var coords, popup;
 var data = [];
 
-d3.csv("gs://iridatacsv/transposed.csv", function(readdata) {
+d3.csv("https://storage.googleapis.com/iridatacsv/transposed.csv", function(readdata) {
     data = readdata;
     console.log("Data Read!");
     console.log(data.length);
@@ -30,7 +30,7 @@ function createTable(recreated_lng, recreated_lat, lng_sign, lat_sign) {
             map_y.push(row["Precipitation Anomaly"]);
         }
     }
-    var popup = new mapboxgl.Popup()
+    popup = new mapboxgl.Popup({offset:30})
 	            .setLngLat(coords.lngLat)
                 .setHTML("<div id='foo'></div>")
 	            .addTo(map);
@@ -46,6 +46,10 @@ function createTable(recreated_lng, recreated_lat, lng_sign, lat_sign) {
             height: 380
         });
     }).addTo(map);
+
+    new mapboxgl.Marker()
+    	.setLngLat(coords.lngLat)
+    	.addTo(map);
 }
 
 function findClosest(lngLat) {
@@ -85,6 +89,7 @@ map.on('zoomend', function(){
 
 zoomlevel = 8.1;
 map.on('load', function() {
+
     map.on('click', function(e) {
     	// console.log(e.features[0].geometry.coordinates);
     	if (zoomlevel == 8)
@@ -95,11 +100,20 @@ map.on('load', function() {
     	map.setCenter(e.lngLat);
     	// console.log(e.lngLat);
     	map.zoomTo(zoomlevel);
+    	$("#side-bar").dialog({ position: { my: "right top", at: "right top", of: window},
+    							classes: {"ui-dialog": "add-margin"}});
     	map.fire('zstart');
     })
 });
 
+$('#intro-bar').dialog({height: 380,
+						width: 780,
+						modal:true,
+                        resizable: false});
+
 document.getElementById('zoomButton').addEventListener('click', function () {
     map.setCenter([12.919578242062556, 38.92232061838632]);
+    popup.remove();
+    $('#side-bar').dialog('destroy');
     map.zoomTo(1.8);
 });

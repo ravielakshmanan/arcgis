@@ -2,38 +2,58 @@
 <html>
 	<head>
 		<meta charset='utf-8' />
-		<title>NOAH | Map View</title>
+		<title>NOAH</title>
 		<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 		<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.js'></script>
 		<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css' rel='stylesheet' />
+		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 		<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-		<style>
-			body { margin:0; padding:0; }
-			#map { position:absolute; top:0; bottom:0; width:100%; }
-		</style>
-		<script src="{{ url_for('static', filename='js/d3v4+jetpack.js') }}"></script>
+		<link rel="stylesheet" type="text/css" href="../static/css/style.css">
+		<script src="../static/js/d3v4+jetpack.js"></script>
 	</head>
 
 	<body>
-		<style>
-		    #zoomButton {
-		        display: block;
-		        position: relative;
-		        margin: 0px auto;
-		        width: 50%;
-		        height: 40px;
-		        padding: 10px;
-		        border: none;
-		        border-radius: 3px;
-		        font-size: 12px;
-		        text-align: center;
-		        color: #fff;
-		        background: #ee8a65;
-		    }
-		</style>
 		<div id='map'></div>
 		<br/>
+		<a href="/">
+			<button id="backButton" class="back-button"> << Back to site</button>
+		</a>
 		<button id="zoomButton" class="zoom-button">Zoom Out</button>
-		<script src="{{ url_for('static', filename='js/mapbox.js') }}"></script>
+		<div id='intro-bar' title='Welcome to NOAH!'>
+			Towns dotted along Kentucky’s Appalachian Mountain range and Utah’s northern border in the United States
+			<br>
+			Communities tucked along India’s eastern coastline
+			<br>
+			Cities along Argentina’s central riverway.
+			<br>
+			<br>
+			Worldwide, more and more people are staring down changes in the most abundant yet precious resource: water. 
+			<br>
+			<br>
+			The World Health Organization estimates that 2.1 billion people, nearly 30 percent of the world’s population, don’t have access to safe drinking water from their homes.
+			<br>
+			<br>
+			Sea-level rise, droughts and changes in rainfall due to climate change are set to make things tougher. For many communities, they already have.
+			<br>
+			<br>
+			This map provides the data, showing you how much surface water and rainfall has changed near you.
+			<br>
+			<br>
+			NOAH is built for  anyone across the world interested in better understanding their environment. The ultimate goal is to make water data more accessible and understandable.
+			<br>
+			<br>
+			To see how your community is doing, locate it on the map, and click.  
+		</div>
+		<div id='side-bar' title="Here's what you're seeing">
+			The pop-up graph demonstrates the monthly rainfall highs and lows in the region. The reds and greens on the map below depict whether the amount of water on land has increased or decreased in the last three decades.
+			<br>
+			<br>
+			The water’s location, and how much of it lives there, are shaped by a host of factors--including human activity and how much it rains. It’s a cyclical relationship: People’s wellbeing and biological diversity also rely greatly on water supply and rainfall.
+			<br>
+			<br>
+			Questions? Ping us at <a href="mailto:water.appspot@gmail.com">water.appspot@gmail.com.</a>
+		</div>
+		<script src="../static/js/mapbox.js"></script>
 	</body>
 </html>

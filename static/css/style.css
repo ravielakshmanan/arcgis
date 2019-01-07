@@ -5,6 +5,95 @@
  *
  * Made By MaterializeCSS.com
  */
+body { 
+  margin:0; 
+  padding:0; 
+}
+
+#map { 
+  position:absolute; 
+  top:0; 
+  bottom:0; 
+  width:100%; 
+}
+
+#backButton {
+  position: relative;
+  margin-top: 10px;
+  margin-left: 10%;
+  width: 10%;
+  height: 40px;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  font-size: 12px;
+  text-align: center;
+  color: #fff;
+  background: #ee8a65;
+}
+
+#zoomButton {
+  position: relative;
+  margin-top: 10px;
+  margin-left: 5%;
+  width: 50%;
+  height: 40px;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  font-size: 12px;
+  text-align: center;
+  color: #fff;
+  background: #ee8a65;
+}
+
+.add-margin {
+  margin: 2%;
+  position: fixed;
+  top: width/2;
+}
+
+.ui-widget {
+    font-family: Verdana,Arial,sans-serif;
+    font-size: .8em;
+}
+
+.ui-widget-content {
+    background: #EFE6FF;
+    border: 1px solid #00E6D7;
+    color: #222222;
+}
+
+.ui-dialog {
+    left: 0;
+    outline: 0 none;
+    padding: 0 !important;
+    position: absolute;
+    top: 0;
+}
+
+.ui-dialog .ui-dialog-content {
+    background: none repeat scroll 0 0 transparent;
+    border: 0 none;
+    overflow: auto;
+    position: relative;
+    padding: 1.5em;
+    text-align: center;
+}
+
+.ui-widget-header {
+    background: #00E6D7;
+  border: 0;
+  color: #fff;
+  font-weight: normal;
+  text-align: center;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    padding: 0.1em .5em;
+    position: relative;
+    font-size: 1.5em;
+}
 
 nav ul a,
 nav .brand-logo {
