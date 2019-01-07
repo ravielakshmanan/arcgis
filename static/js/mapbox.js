@@ -3,16 +3,22 @@ var zooming = false;
 var coords, popup;
 var data = [];
 
-d3.csv("https://storage.googleapis.com/iridatacsv/transposed.csv", function(readdata) {
-    data = readdata;
-    console.log("Data Read!");
-    console.log(data.length);
-});
+// d3.csv("https://storage.googleapis.com/iridatacsv/transposed.csv", function(readdata) {
+//     data = readdata;
+//     console.log("Data Read!");
+//     console.log(data.length);
+// });
 
 const map = new mapboxgl.Map({
 	container: 'map',
 	style: 'mapbox://styles/pankhurikumar/cjnb7luyx5iu62rrw4fpyyz9f'
 });
+
+var geocoder = new MapboxGeocoder({
+    accessToken: mapboxgl.accessToken
+});
+
+document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
 
 function createTable(recreated_lng, recreated_lat, lng_sign, lat_sign) {
     lng = String(recreated_lng) + lng_sign;
