@@ -1,257 +1,185 @@
-<!-- Some examples -->
-<!-- https://developers.arcgis.com/labs/javascript/display-a-web-map/ -->
-<!-- http://eu-commission.maps.arcgis.com/apps/Cascade/index.html?appid=dc1ec0acb885450e829758df905f4c7e -->
-<!-- https://storymaps.esri.com/stories/2018/anthropocene/2-the-land.html -->
-<!-- https://storymaps.arcgis.com/en/gallery/#s=0 -->
-<!-- https://developers.arcgis.com/javascript/latest/sample-code/sandbox/index.html?sample=featurelayerview-query-stats&fbclid=IwAR2ExsNaDCK-vSr6mj6siJC1wW-rAUy8yTJEPPu6BBbF9uEY_18xlfIA4-k -->
-<!-- Precipitation data: Warning: Huge file: http://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NCEP/.CPC/.CAMS_OPI/.v0208/.anomaly/.prcp/T/(days%20since%201960-01-01)streamgridunitconvert/T/differential_mul/T/(months%20since%201960-01-01)streamgridunitconvert//units/(mm/month)def//long_name/(Precipitation%20Anomaly)def/DATA/-500/-450/-400/-350/-300/-250/-200/-150/-100/-50/-25/25/50/100/150/200/250/300/350/400/450/500/VALUES/prcp_anomaly_max500_colors2/ngridtable/4+ncoltable.html -->
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="https://js.arcgis.com/4.9/esri/css/main.css">
-    <script src="https://js.arcgis.com/4.9/"></script>
-    <title>A JavaScript starter app</title>
-    <style>
-      html, body, #viewDiv {
-        padding: 0;
-        margin: 0;
-        height: 100%;
-        width: 100%;
-      }
-    </style>
-    <script>
-	  require([
-	      "esri/Map",
-	      "esri/views/MapView",
-	      "esri/layers/FeatureLayer",
-	      "esri/tasks/support/Query",
-		  "esri/tasks/QueryTask",
-		  "esri/Graphic",
-	      "dojo/domReady!"
-	    ], function(Map, MapView, FeatureLayer, Query, QueryTask, Graphic) {
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>NOAH</title>
 
-	    var map = new Map({
-	      basemap: "oceans"
-	      //basemap: "topo-vector"
-	    });
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <style type="text/css">
+    .list-inline {
+      padding-left: 0;
+      margin-left: -5px;
+      list-style: none;
+    }
+    .list-inline > li {
+      display: inline-block;
+      padding-right: 5px;
+      padding-left: 5px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="white" role="navigation">
+    <div class="nav-wrapper container">
+      <a id="logo-container" href="#" class="brand-logo">NOAH</a>
+      <ul class="right hide-on-med-and-down">
+        <li>
+          <a href="#contact">Contact Us</a>
+        </li>
+      </ul>
+      <ul id="nav" class="sidenav">
+        <li>
+          <a href="#about">About NOAH</a>
+          <a href="#research">Research</a>
+          <a href="#team">About the team</a>
+          <a href="#contact">Contact Us</a>
+        </li>
+      </ul>
+      <a href="#" data-target="nav" class="sidenav-trigger show-on-large"><i class="material-icons">menu</i></a>
+    </div>
+  </nav>
 
-	    var view = new MapView({
-	      container: "viewDiv",
-	      map: map,
-	      center: [-118.71511,34.09042],
-	      zoom: 10, //3
+  <div id="index-banner" class="parallax-container">
+    <div class="parallax"><img src="Precipitation_longterm_mean.gif" alt="Unsplashed background img 1"></div>
+  </div>
 
-	      popup: {
-	      	dockEnabled: true,
-	      	dockOptions: {
-	      		buttonEnabled: false,
-	      		breakpoint: false
-	      	}
-	      }
-	    });
+  <div class="container" id="about">
+    <div class="section">
 
-	    // Define a simple renderer and symbol
-		var trailheadsRenderer = {
-		  "type": "simple",
-		  "symbol": {
-		    "type": "picture-marker",
-		    "url": "http://static.arcgis.com/images/Symbols/NPS/npsPictograph_0231b.png",
-		    "width": 10.5,
-		    "height": 10.5
-		  }
-		}
+      <div class="row">
+        <div class="col s12 center">
+          <h3><i class="mdi-content-send brown-text"></i></h3>
+          <h4>About NOAH</h4>
+          <p class="left-align light">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque id nunc nec volutpat. Etiam pellentesque tristique arcu, non consequat magna fermentum ac. Cras ut ultricies eros. Maecenas eros justo, ullamcorper a sapien id, viverra ultrices eros. Morbi sem neque, posuere et pretium eget, bibendum sollicitudin lacus. Aliquam eleifend sollicitudin diam, eu mattis nisl maximus sed. Nulla imperdiet semper molestie. Morbi massa odio, condimentum sed ipsum ac, gravida ultrices erat. Nullam eget dignissim mauris, non tristique erat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;</p>
+        </div>
+      </div>
 
-		// Define query SQL expression
-		  var query = new Query();
-		  query.where = "PARK_NAME like '%State Park%'"
-		  query.outFields = ["*"];
-		  query.returnGeometry = true;
+    </div>
+  </div>
 
-		// Define the query task
-		  var queryTask = new QueryTask({
-		    url: "https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Parks_and_Open_Space/FeatureServer/0"
-		  });
+  <div class="container" id="research">
+    <div class="section">
 
-		  // Execute the query
-		  queryTask.execute(query)
-		    .then(function(result){
-		      console.log(result.features.length)
+      <!--   Icon Section   -->
+      <div class="row">
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center brown-text"><i class="material-icons">flash_on</i></h2>
+            <h5 class="center">Speeds up development</h5>
 
-		      //*** ADD ***//
-		      result.features.forEach(function(item){
-		         var g = new Graphic({
-		           geometry: item.geometry,
-		           attributes: item.attributes,
-		           symbol: {
-		             type: "simple-line",
-		             color: "black",
-		             width: 1.2,
-		             style: "short-dot"
-		           },
-		           popupTemplate: {
-		             title: "{PARK_NAME}",
-		             content: "{*}"  // All of the fields
-		           }
-		         });
-		         view.graphics.add(g);
-		      });
+            <p class="light">We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components. Additionally, we refined animations and transitions to provide a smoother experience for developers.</p>
+          </div>
+        </div>
 
-		      // Zoom to the features
-		      view.goTo({
-		        target: view.graphics
-		      });
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center brown-text"><i class="material-icons">group</i></h2>
+            <h5 class="center">User Experience Focused</h5>
 
-		     })
-		    .otherwise(function(e){
-		      console.log(e);
-		    });
+            <p class="light">By utilizing elements and principles of Material Design, we were able to create a framework that incorporates components and animations that provide more feedback to users. Additionally, a single underlying responsive system across all platforms allow for a more unified user experience.</p>
+          </div>
+        </div>
 
-		// Define a unique value renderer and symbols
-		var openSpacesRenderer = {
-		    "type": "class-breaks",
-		    "field": "GIS_ACRES",
-		    "classBreakInfos": [
-		      {
-		        "symbol": {
-		          "color": [
-		            193,157,188,255
-		          ],
-		          "outline": {
-		            "width": 0
-		          },
-		          "type": "simple-fill",
-		          "style": "solid"
-		        },
-		        "label": "0 to 1,629",
-		        "minValue": 0,
-		        "maxValue": 1629
-		      },
-		      {
-		        "symbol": {
-		          "color": [
-		            203,216,162,255
-		          ],
-		          "outline": {
-		            "width": 0
-		          },
-		          "type": "simple-fill",
-		          "style": "solid"
-		        },
-		        "label": "> 1,629 to 3,754",
-		        "minValue": 1629,
-		        "maxValue": 3754
-		      },
-		      {
-		        "symbol": {
-		          "color": [
-		            144,198,120,255
-		          ],
-		          "outline": {
-		            "width": 0
-		          },
-		          "type": "simple-fill",
-		          "style": "solid"
-		        },
-		        "label": "> 3,754 to 11,438",
-		        "minValue": 3754,
-		        "maxValue": 11438
-		      }
-		    ]
-		  }
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center brown-text"><i class="material-icons">settings</i></h2>
+            <h5 class="center">Easy to work with</h5>
 
-		// Define popup for Parks and Open Spaces
-		  var popupOpenspaces = {
-		    "title": "{PARK_NAME}",
-		    "content": [{
-		      "type": "fields",
-		      "fieldInfos": [
-		        {
-		          "fieldName": "AGNCY_NAME",
-		          "label": "Agency",
-		          "isEditable": true,
-		          "tooltip": "",
-		          "visible": true,
-		          "format": null,
-		          "stringFieldOption": "textbox"
-		        },
-		        {
-		          "fieldName": "TYPE",
-		          "label": "Type",
-		          "isEditable": true,
-		          "tooltip": "",
-		          "visible": true,
-		          "format": null,
-		          "stringFieldOption": "textbox"
-		        },
-		        {
-		          "fieldName": "ACCESS_TYP",
-		          "label": "Access",
-		          "isEditable": true,
-		          "tooltip": "",
-		          "visible": true,
-		          "format": null,
-		          "stringFieldOption": "textbox"
-		        },
-		        {
-		          "fieldName": "RPT_ACRES",
-		          "label": "Acres (reported)",
-		          "isEditable": true,
-		          "tooltip": "",
-		          "visible": true,
-		          "format": {
-		            "places": 2,
-		            "digitSeparator": true
-		          },
-		          "stringFieldOption": "textbox"
-		        },
-		        {
-		          "fieldName": "GIS_ACRES",
-		          "label": "Acres",
-		          "isEditable": true,
-		          "tooltip": "",
-		          "visible": true,
-		          "format": {
-		            "places": 2,
-		            "digitSeparator": true
-		          },
-		          "stringFieldOption": "textbox"
-		        }
-		      ]
-		    },{
-	    	type: "media",
-		    mediaInfos: [{
-		      title: "<b>Park Rating</b>",
-		      type: "pie-chart",
-		      caption: "",
-		      value: {
-		        theme: "Grasshopper",
-		        fields: [ "RPT_ACRES", "GIS_ACRES" ],
-		        normalizeField: null
-		        //tooltipField: "Rating"
-		      }
-		    }]
-		    }
+            <p class="light">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p>
+          </div>
+        </div>
+      </div>
 
-		    ],
-		  }
+    </div>
+  </div>
 
-	    // Trailheads point feature layer
-	    // there is also a CSV layer
-	    // https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-CSVLayer.html
-	  	var featureLayer = new FeatureLayer({
-	    	url: "https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Parks_and_Open_Space/FeatureServer/0",
-	    	renderer: openSpacesRenderer,
-	    	outFields: ["*"],
-            popupTemplate: popupOpenspaces
-	  	});
+  <div class="parallax-container valign-wrapper">
+    <div class="section no-pad-bot">
+      <div class="container">
+        <div class="row center">
+          <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
+        </div>
+      </div>
+    </div>
+    <div class="parallax"><img src="Dec_2018_Anomaly.gif" alt="Unsplashed background img 2"></div>
+  </div>
 
-	  	map.add(featureLayer);
-	  });
-	</script>
-  </head>
-  <body>
-    <div id="viewDiv"></div>
+  <div class="container" id="team">
+    <div class="section">
+
+      <div class="row">
+        <div class="col s12 center">
+          <h3><i class="mdi-content-send brown-text"></i></h3>
+          <h4>Team NOAH</h4>
+          <p class="left-align light">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque id nunc nec volutpat. Etiam pellentesque tristique arcu, non consequat magna fermentum ac. Cras ut ultricies eros. Maecenas eros justo, ullamcorper a sapien id, viverra ultrices eros. Morbi sem neque, posuere et pretium eget, bibendum sollicitudin lacus. Aliquam eleifend sollicitudin diam, eu mattis nisl maximus sed. Nulla imperdiet semper molestie. Morbi massa odio, condimentum sed ipsum ac, gravida ultrices erat. Nullam eget dignissim mauris, non tristique erat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="parallax-container valign-wrapper">
+    <div class="parallax"><img src="Dec_2018_Anomaly.gif" alt="Unsplashed background img 2"></div>
+  </div>
+
+  <div class="container" id="contact">
+    <div class="section">
+
+      <div class="row">
+        <div class="col s12 center">
+          <h3><i class="mdi-content-send brown-text"></i></h3>
+          <h4>Contact Us</h4>
+          <p class="left-align light">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque id nunc nec volutpat. Etiam pellentesque tristique arcu, non consequat magna fermentum ac. Cras ut ultricies eros. Maecenas eros justo, ullamcorper a sapien id, viverra ultrices eros. Morbi sem neque, posuere et pretium eget, bibendum sollicitudin lacus. Aliquam eleifend sollicitudin diam, eu mattis nisl maximus sed. Nulla imperdiet semper molestie. Morbi massa odio, condimentum sed ipsum ac, gravida ultrices erat. Nullam eget dignissim mauris, non tristique erat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="parallax-container valign-wrapper">
+    <div class="parallax"><img src="background3.jpg" alt="Unsplashed background img 3"></div>
+  </div>
+
+  <footer class="page-footer teal">
+    <div class="container">
+      <div class="row">
+        <div class="col l9 s12">
+          <p class="grey-text text-lighten-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque id nunc nec volutpat. Etiam pellentesque tristique arcu, non consequat magna fermentum ac. Cras ut ultricies eros. Maecenas eros justo, ullamcorper a sapien id, viverra ultrices eros. Morbi sem neque, posuere et pretium eget, bibendum sollicitudin lacus.</p>
+
+
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Connect</h5>
+          <ul>
+            <li class="list-inline">
+              <div class="row">
+                <div class="col s12">
+                  <i class="material-icons">email</i>
+                  <a class="white-text" href="#!">Email</a>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      Built using <a class="brown-text text-lighten-3" href="http://materializecss.com">Materialize CSS</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="js/materialize.js"></script>
+  <script src="js/init.js"></script>
+
   </body>
 </html>
