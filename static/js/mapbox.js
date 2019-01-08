@@ -1,13 +1,13 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFua2h1cmlrdW1hciIsImEiOiJjamZwbnV2OTcxdXB1MzBudnViY2p3aDEzIn0.Zf9ZkY05gz_Zsyen1W1FbA';
 var zooming = false;
-var coords, popup;
+var coords, popup, placeName;
 var data = [];
 
-// d3.csv("https://storage.googleapis.com/iridatacsv/transposed.csv", function(readdata) {
-//     data = readdata;
-//     console.log("Data Read!");
-//     console.log(data.length);
-// });
+d3.csv("static/data/transposed.csv", function(readdata) {
+    data = readdata;
+    console.log("Data Read!");
+    console.log(data.length);
+});                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
 
 const map = new mapboxgl.Map({
 	container: 'map',
@@ -36,26 +36,48 @@ function createTable(recreated_lng, recreated_lat, lng_sign, lat_sign) {
             map_y.push(row["Precipitation Anomaly"]);
         }
     }
-    popup = new mapboxgl.Popup({offset:30})
+
+    geocoder.mapboxClient.geocodeReverse({
+        latitude: coords.lngLat.lat, 
+        longitude: coords.lngLat.lng
+    }, function(err, res) {
+    	found_flag = 0;
+    	if (res.features) {
+    		for (i = 0; i < res.features.length; i++) {
+    			var item = res.features[i];
+    			if (item['id'].includes('place')) {
+    				placeName = item['place_name'];
+    				found_flag = 1;
+    			}
+    		}
+    		if (found_flag == 0) {
+    			placeName = res.features[0]['place_name'];
+    		}
+    	} else{
+    		placeName = ""
+    	}
+
+    	popup = new mapboxgl.Popup({offset:30})
 	            .setLngLat(coords.lngLat)
                 .setHTML("<div id='foo'></div>")
 	            .addTo(map);
 
-    popup.on('open', function() {
-        Plotly.newPlot('foo', [{
-                x: map_x,
-                y: map_y,
-                name: 'Precipitation',
-                type: 'scatter'
-            }], {
-            title: 'Precipitation Data for (' + lng + ", " + lat + ')',
-            height: 380
-        });
-    }).addTo(map);
+	    popup.on('open', function() {
+	        Plotly.newPlot('foo', [{
+	                x: map_x,
+	                y: map_y,
+	                name: 'Precipitation',
+	                type: 'scatter'
+	            }], {
+	            title: 'Precipitation Data for ' + placeName + ' (' + lng + ", " + lat + ')',
+	            height: 380
+	        });
+	    }).addTo(map);
 
-    new mapboxgl.Marker()
-    	.setLngLat(coords.lngLat)
-    	.addTo(map);
+	    new mapboxgl.Marker()
+	    	.setLngLat(coords.lngLat)
+	    	.addTo(map);
+    });
 }
 
 function findClosest(lngLat) {
