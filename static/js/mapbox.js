@@ -3,9 +3,11 @@ var zooming = false;
 var coords, popup, placeName;
 var data = [];
 
-d3.csv("static/data/transposed.csv", function(readdata) {
+var file_name = "/static/iri_data.csv";
+
+d3.csv(file_name, function(readdata) {
     data = readdata;
-    console.log("Data Read!");
+    console.log("Finished loading data!");
     console.log(data.length);
 });                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
 

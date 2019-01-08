@@ -11,8 +11,8 @@
 		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 		<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="../static/css/style.css">
-		<script src="../static/js/d3v4+jetpack.js"></script>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+		<script src="{{ url_for('static', filename='js/d3v4+jetpack.js') }}"></script>
 	</head>
 
 	<body>
@@ -57,6 +57,6 @@
 			<br>
 			Questions? Ping us at <a href="mailto:water.appspot@gmail.com">water.appspot@gmail.com.</a>
 		</div>
-		<script src="../static/js/mapbox.js"></script>
+		<script src="{{ url_for('static', filename='js/mapbox.js') }}"></script>
 	</body>
 </html>

@@ -9,18 +9,6 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="{{ url_for('static', filename='css/materialize.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="{{ url_for('static', filename='css/style.css')}} " type="text/css" rel="stylesheet" media="screen,projection"/>
-  <style type="text/css">
-    .list-inline {
-      padding-left: 0;
-      margin-left: -5px;
-      list-style: none;
-    }
-    .list-inline > li {
-      display: inline-block;
-      padding-right: 5px;
-      padding-left: 5px;
-    }
-  </style>
 </head>
 <body>
   <nav class="white" role="navigation">
@@ -31,13 +19,14 @@
           <a href="#about">Breaking Things Down</a>
           <a href="#research">Data Sources</a>
           <a href="#team">The Team</a>
+          <a href="#contact">Contact Us</a>
         </li>
       </ul>
       <a href="#" data-target="nav" class="sidenav-trigger show-on-large"><i class="material-icons">menu</i></a>
       <a id="logo-container" href="#" class="brand-logo">NOAH</a>
       <ul class="right hide-on-med-and-down">
         <li>
-          <a href="#team">Contact Us</a>
+          <a href="#contact">Contact Us</a>
         </li>
       </ul>
     </div>
@@ -155,32 +144,11 @@
     </div>
   </div>
 
-  <div class="parallax-container valign-wrapper">
-    <div class="parallax"><img src="/static/images/Dec_2018_Anomaly.gif" alt="Unsplashed background img 2"></div>
-  </div>
-
-
-  <div class="parallax-container valign-wrapper">
-    <div class="parallax"><img src="/static/images/background3.jpg" alt="Unsplashed background img 3"></div>
-  </div>
-
   <footer class="page-footer teal">
-    <div class="container">
-      <div class="row">
-        <div class="col l3 s12">
-          <h5 class="white-text">Connect</h5>
-          <ul>
-            <li class="list-inline">
-              <div class="row">
-                <div class="col s12">
-                  <i class="material-icons">email</i>
-                  <a class="white-text" href="#!">Email</a>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
+    <div class="container" id="contact">
+      <h4>Contact Us</h4>
+      <p class="left-align light">Got any questions? Do get in touch with us here: <i class="material-icons">email</i>
+              <a class="white-text" href="mailto:water.appspot@gmail.com">Email</a></p>
     </div>
     <div class="footer-copyright">
       <div class="container">
