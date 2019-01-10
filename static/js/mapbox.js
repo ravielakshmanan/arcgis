@@ -1,84 +1,99 @@
-mapboxgl.accessToken = 'pk.eyJ1IjoicGFua2h1cmlrdW1hciIsImEiOiJjamZwbnV2OTcxdXB1MzBudnViY2p3aDEzIn0.Zf9ZkY05gz_Zsyen1W1FbA';
+accessToken = 'pk.eyJ1IjoicGFua2h1cmlrdW1hciIsImEiOiJjamZwbnV2OTcxdXB1MzBudnViY2p3aDEzIn0.Zf9ZkY05gz_Zsyen1W1FbA';
 var zooming = false;
 var coords, popup, placeName;
 var data = [];
 
-d3.csv("static/data/transposed.csv", function(readdata) {
-    data = readdata;
-    console.log("Data Read!");
-    console.log(data.length);
-});                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+// d3.csv("static/data/transposed.csv", function(readdata) {
+//     data = readdata;
+//     console.log("Data Read!");
+//     console.log(data.length);
+// });
 
-const map = new mapboxgl.Map({
-	container: 'map',
-	style: 'mapbox://styles/pankhurikumar/cjnb7luyx5iu62rrw4fpyyz9f'
-});
+var mymap = L.map('map').setView([30.52, 18.34], 2.5);
 
-var geocoder = new MapboxGeocoder({
-    accessToken: mapboxgl.accessToken
-});
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox.satellite',
+    accessToken: accessToken
+}).addTo(mymap);
 
-document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
+var searchControl = L.Control.geocoder({
+        defaultMarkGeocode: false
+    })
+    .on('markgeocode', function(e) {
+        var bbox = e.geocode.bbox;
+        var poly = L.polygon([
+             bbox.getSouthEast(),
+             bbox.getNorthEast(),
+             bbox.getNorthWest(),
+             bbox.getSouthWest()
+        ]).addTo(mymap);
+        mymap.fitBounds(poly.getBounds());
+        });
 
-function createTable(recreated_lng, recreated_lat, lng_sign, lat_sign) {
-    lng = String(recreated_lng) + lng_sign;
-    lat = String(recreated_lat) + lat_sign;
-    var map_x = [];
-    var map_y = [];
+document.getElementById('geocoder').appendChild(searchControl.onAdd(map));
 
-    var row;
-    console.log(lng, lat);
-    for(i = 0; i < data.length; i++) {
-        if(data[i].Longitude == lng && data[i].Latitude == lat) {
-            row = data[i];
-            time = row.Time.split(" 16 ");
-            map_x.push(time.splice(-1)[0]);
-            map_y.push(row["Precipitation Anomaly"]);
-        }
-    }
-
-    geocoder.mapboxClient.geocodeReverse({
-        latitude: coords.lngLat.lat, 
-        longitude: coords.lngLat.lng
-    }, function(err, res) {
-    	found_flag = 0;
-    	if (res.features) {
-    		for (i = 0; i < res.features.length; i++) {
-    			var item = res.features[i];
-    			if (item['id'].includes('place')) {
-    				placeName = item['place_name'];
-    				found_flag = 1;
-    			}
-    		}
-    		if (found_flag == 0) {
-    			placeName = res.features[0]['place_name'];
-    		}
-    	} else{
-    		placeName = ""
-    	}
-
-    	popup = new mapboxgl.Popup({offset:30})
-	            .setLngLat(coords.lngLat)
-                .setHTML("<div id='foo'></div>")
-	            .addTo(map);
-
-	    popup.on('open', function() {
-	        Plotly.newPlot('foo', [{
-	                x: map_x,
-	                y: map_y,
-	                name: 'Precipitation',
-	                type: 'scatter'
-	            }], {
-	            title: 'Precipitation Data for ' + placeName + ' (' + lng + ", " + lat + ')',
-	            height: 380
-	        });
-	    }).addTo(map);
-
-	    new mapboxgl.Marker()
-	    	.setLngLat(coords.lngLat)
-	    	.addTo(map);
-    });
-}
+// function createTable(recreated_lng, recreated_lat, lng_sign, lat_sign) {
+//     lng = String(recreated_lng) + lng_sign;
+//     lat = String(recreated_lat) + lat_sign;
+//     var map_x = [];
+//     var map_y = [];
+//
+//     var row;
+//     console.log(lng, lat);
+//     for(i = 0; i < data.length; i++) {
+//         if(data[i].Longitude == lng && data[i].Latitude == lat) {
+//             row = data[i];
+//             time = row.Time.split(" 16 ");
+//             map_x.push(time.splice(-1)[0]);
+//             map_y.push(row["Precipitation Anomaly"]);
+//         }
+//     }
+//
+//     geocoder.mapboxClient.geocodeReverse({
+//         latitude: coords.lngLat.lat,
+//         longitude: coords.lngLat.lng
+//     }, function(err, res) {
+//     	found_flag = 0;
+//     	if (res.features) {
+//     		for (i = 0; i < res.features.length; i++) {
+//     			var item = res.features[i];
+//     			if (item['id'].includes('place')) {
+//     				placeName = item['place_name'];
+//     				found_flag = 1;
+//     			}
+//     		}
+//     		if (found_flag == 0) {
+//     			placeName = res.features[0]['place_name'];
+//     		}
+//     	} else{
+//     		placeName = ""
+//     	}
+//
+//     	var marker = L.marker(e.latlng)
+//             .bindPopup("<div id='iri-graph'></div>")
+//             .on('popupopen', function(e) {
+//                 Plotly.newPlot('iri-graph', [{
+//                     x: [0, 1], //map_x,
+//                     y: [4, 6], //map_y,
+//                     name: 'Precipitation',
+//                     type: 'scatter'
+//                 }], {
+//                     title: 'Precipitation Data for ' // + placeName + ' (' + lng + ", " + lat + ')',
+//                     width: 300,
+//                     height: 150,
+//                     margin: {
+//                         l: 0,
+//                         r: 0,
+//                         b: 0,
+//                         t: 0,
+//                         pad: 0
+//                     }
+//                 });
+//             }).addTo(mymap);
+//     });
+// }
 
 function findClosest(lngLat) {
     lng = lngLat.lng;
@@ -94,44 +109,21 @@ function findClosest(lngLat) {
     recreated_lng = 1.25 + (x - 1) * 2.5;
     recreated_lat = 1.25 + (y - 1) * 2.5;
 
-    createTable(recreated_lng, recreated_lat, lng_sign, lat_sign);
+    // createTable(recreated_lng, recreated_lat, lng_sign, lat_sign);
 }
 
-//zstart is defined by me, .fire() calls this function in map.on()
-map.on('zstart', function(){
-	zooming = true;
-});
-
-//zend in defined by me, called at the end of the zoom to set zooming value
-map.on('zend', function(){
-	zooming = false;
-});
-
-//zoomend is predefined, function called automatically when zoom ends
-map.on('zoomend', function(){
-	if(zooming) {
-	    findClosest(coords.lngLat);
-	    map.fire('zend');
-  	}
-});
-
 zoomlevel = 8.1;
-map.on('load', function() {
-
-    map.on('click', function(e) {
-    	// console.log(e.features[0].geometry.coordinates);
-    	if (zoomlevel == 8)
-    		zoomlevel = 8.1;
-    	else
-    		zoomlevel = 8;
-    	coords = e;
-    	map.setCenter(e.lngLat);
-    	// console.log(e.lngLat);
-    	map.zoomTo(zoomlevel);
-    	$("#side-bar").dialog({ position: { my: "right top", at: "right top", of: window},
-    							classes: {"ui-dialog": "add-margin"}});
-    	map.fire('zstart');
-    })
+mymap.on('click', function(e) {
+    console.log(e.latlng);
+    mymap.flyTo([e.latlng.lat, e.latlng.lng], 8);
+    // findClosest(e.latlng);
+    var marker = L.marker(e.latlng).addTo(mymap);
+    var popUp = L.popup({ offset: [0, -40] })
+       .setLatLng(e.latlng)
+       .setContent("<div id='iri-graph'>YIKES!</div>")
+       .addTo(mymap);
+    $("#side-bar").dialog({ position: { my: "right top", at: "right top", of: window},
+    						classes: {"ui-dialog": "add-margin"}});
 });
 
 $('#intro-bar').dialog({height: 380,
@@ -140,8 +132,7 @@ $('#intro-bar').dialog({height: 380,
                         resizable: false});
 
 document.getElementById('zoomButton').addEventListener('click', function () {
-    map.setCenter([12.919578242062556, 38.92232061838632]);
-    popup.remove();
+    mymap.flyTo([30.52, 18.34], 2.5);
+    $(".leaflet-popup-close-button")[0].click();
     $('#side-bar').dialog('destroy');
-    map.zoomTo(1.8);
 });
