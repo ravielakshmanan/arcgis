@@ -3,13 +3,13 @@ var zooming = false;
 var coords, popup, placeName;
 var data = [];
 
-var file_name = "/static/iri_data.csv";
+// var file_name = "/static/iri_data.csv";
 
-d3.csv(file_name, function(readdata) {
-    data = readdata;
-    console.log("Finished loading data!");
-    console.log(data.length);
-});
+// d3.csv(file_name, function(readdata) {
+//     data = readdata;
+//     console.log("Finished loading data!");
+//     console.log(data.length);
+// });
 
 var mymap = L.map('map').setView([30.52, 18.34], 2.5);
 
