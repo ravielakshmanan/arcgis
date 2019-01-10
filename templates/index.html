@@ -9,18 +9,14 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="{{ url_for('static', filename='css/materialize.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="{{ url_for('static', filename='css/style.css')}} " type="text/css" rel="stylesheet" media="screen,projection"/>
-  <style type="text/css">
-    .list-inline {
-      padding-left: 0;
-      margin-left: -5px;
-      list-style: none;
-    }
-    .list-inline > li {
-      display: inline-block;
-      padding-right: 5px;
-      padding-left: 5px;
+
+  <style>
+    .img-blur {
+      -webkit-filter: blur(3px);
+      filter: blur(3px);
     }
   </style>
+
 </head>
 <body>
   <nav class="white" role="navigation">
@@ -31,20 +27,30 @@
           <a href="#about">Breaking Things Down</a>
           <a href="#research">Data Sources</a>
           <a href="#team">The Team</a>
+          <a href="#contact">Contact Us</a>
         </li>
       </ul>
       <a href="#" data-target="nav" class="sidenav-trigger show-on-large"><i class="material-icons">menu</i></a>
       <a id="logo-container" href="#" class="brand-logo">NOAH</a>
       <ul class="right hide-on-med-and-down">
         <li>
-          <a href="#team">Contact Us</a>
+          <a href="#contact">Contact Us</a>
         </li>
       </ul>
     </div>
   </nav>
 
-  <div id="index-banner" class="parallax-container">
-    <div class="parallax"><img src="/static/images/Precipitation_longterm_mean.gif" alt="Unsplashed background img 1"></div>
+  <div id="index-banner" class="parallax-container center-align valign-wrapper">
+    <div class="section no-pad-bot">
+      <div class="container">
+        <div class="row center">
+          <a href="{{ url_for('render_map') }}" class="waves-effect waves-light btn-large black darken-4"><i class="material-icons right">map</i>Open Map</a>
+        </div>
+        <br><br>
+
+      </div>
+    </div>
+    <div class="parallax"><img class="img-blur" src="/static/images/Precipitation_longterm_mean.gif" alt="Precipitation longterm mean"></div>
   </div>
 
   <div class="container" id="about">
@@ -90,10 +96,6 @@
         </div>
       </div>
 
-      <div class="row center">
-          <a href="{{ url_for('render_map') }}" class="waves-effect waves-light btn-large"><i class="material-icons right">map</i>Render Map</a>
-        </div>
-
     </div>
   </div>
 
@@ -124,7 +126,7 @@
   </div>
 
   <div class="parallax-container valign-wrapper">
-    <div class="parallax"><img src="/static/images/Dec_2018_Anomaly.gif" alt="Unsplashed background img 2"></div>
+    <div class="parallax"><img src="/static/images/Dec_2018_Anomaly.gif" alt="Dec 2018 Precipitation Anomaly"></div>
   </div>
 
   <div class="container" id="team">
@@ -155,32 +157,11 @@
     </div>
   </div>
 
-  <div class="parallax-container valign-wrapper">
-    <div class="parallax"><img src="/static/images/Dec_2018_Anomaly.gif" alt="Unsplashed background img 2"></div>
-  </div>
-
-
-  <div class="parallax-container valign-wrapper">
-    <div class="parallax"><img src="/static/images/background3.jpg" alt="Unsplashed background img 3"></div>
-  </div>
-
   <footer class="page-footer teal">
-    <div class="container">
-      <div class="row">
-        <div class="col l3 s12">
-          <h5 class="white-text">Connect</h5>
-          <ul>
-            <li class="list-inline">
-              <div class="row">
-                <div class="col s12">
-                  <i class="material-icons">email</i>
-                  <a class="white-text" href="#!">Email</a>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
+    <div class="container" id="contact">
+      <h4>Contact Us</h4>
+      <p class="left-align light">Have any questions? Get in touch with us here: <i class="material-icons">email</i>
+              <a class="white-text" href="mailto:water.appspot@gmail.com">Email</a></p>
     </div>
     <div class="footer-copyright">
       <div class="container">

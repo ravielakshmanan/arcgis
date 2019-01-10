@@ -1,0 +1,12 @@
+Blobstore API:
+https://cloud.google.com/appengine/docs/standard/python/blobstore/
+https://cloud.google.com/appengine/docs/standard/python/googlecloudstorageclient/app-engine-cloud-storage-sample
+https://github.com/GoogleCloudPlatform/python-docs-samples/blob/master/appengine/standard/storage/appengine-client/main.py
+
+Google Cloud Storage Client Library:
+https://cloud.google.com/storage/docs/reference/libraries#client-libraries-usage-python
+https://cloud.google.com/storage/docs/downloading-objects#storage-download-object-python
+https://cloud.google.com/appengine/docs/flexible/python/using-cloud-storage
+
+Make bucket publicly accessible:
+gsutil defacl set public-read gs://[YOUR_BUCKET_NAME]
