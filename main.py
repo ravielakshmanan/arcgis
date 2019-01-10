@@ -5,7 +5,7 @@ from google.cloud import storage
 app = Flask(__name__)
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = './noah_credentials.json'
-os.environ["CLOUD_STORAGE_BUCKET"] = 'magicgrant.appspot.com'
+os.environ["CLOUD_STORAGE_BUCKET"] = 'water-noah.appspot.com'
 
 file_name = 'static/iri_data.csv'
 

@@ -22,7 +22,7 @@ python app.py
 
 gcloud app create
 
-gcloud app deploy app.yaml --project magicgrant
+gcloud app deploy app.yaml --project water-noah
 
 Setting CORS:
 gsutil cors set cors-json-file.json gs://iridatacsv
