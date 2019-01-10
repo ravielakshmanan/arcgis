@@ -11,35 +11,37 @@ os.environ["CLOUD_STORAGE_BUCKET"] = 'water-noah.appspot.com'
 data_dictionary = 'test.json'
 
 def get_gc_iri_data():
-	gcs = storage.Client()
-	bucket = gcs.get_bucket(os.environ["CLOUD_STORAGE_BUCKET"])
+    gcs = storage.Client()
+    bucket = gcs.get_bucket(os.environ["CLOUD_STORAGE_BUCKET"])
 
-	blob = bucket.get_blob(data_dictionary)
-	downloaded_blob = blob.download_as_string().decode("utf-8")
+    blob = bucket.get_blob(data_dictionary)
+    downloaded_blob = blob.download_as_string().decode("utf-8")
 
-	return downloaded_blob
+    return downloaded_blob
 
 @app.route('/')
 def load_home():
-	return render_template("index.html")
+    return render_template("index.html")
 
 @app.route('/render_map')
 def render_map():
-	return render_template("render_map.html")
+    return render_template("render_map.html")
 
 
-@app.route('/render_map/<coords>', methods=['POST'])
-def open_dataviz(coords):
-	
-	blob = get_gc_iri_data();
+@app.route('/onclick', methods=['GET', 'POST'])
+def open_dataviz():
+    lat = request.args.get('lat')
+    lng = request.args.get('lng')
 
-	print(blob)
+    blob = get_gc_iri_data()
 
-	return render_template("render_map.html")
+    print(blob)
+
+    return blob
 
 if __name__ == '__main__':
-   app.run(host='127.0.0.1', port=8080, debug=True)
-   # app.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='127.0.0.1', port=8080, debug=True)
+    # app.run(host='0.0.0.0', port=8080, debug=True)
 
 
 

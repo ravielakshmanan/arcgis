@@ -1,15 +1,7 @@
 accessToken = 'pk.eyJ1IjoicGFua2h1cmlrdW1hciIsImEiOiJjamZwbnV2OTcxdXB1MzBudnViY2p3aDEzIn0.Zf9ZkY05gz_Zsyen1W1FbA';
 var zooming = false;
-var coords, popup, placeName;
+var coords, popup, placeName, image;
 var data = [];
-
-// var file_name = "/static/iri_data.csv";
-
-// d3.csv(file_name, function(readdata) {
-//     data = readdata;
-//     console.log("Finished loading data!");
-//     console.log(data.length);
-// });
 
 var mymap = L.map('map').setView([30.52, 18.34], 2.5);
 
@@ -97,9 +89,25 @@ document.getElementById('geocoder').appendChild(searchControl.onAdd(map));
 //     });
 // }
 
+function loadPrecipitationData(lat, lng) {
+	lat = (parseInt(Math.floor(lat/10)) * 10) + 10;
+	lng = (parseInt(Math.floor(lng/10)) * 10);
+	console.log(lat, lng);
+
+	lngsign = (lng < 0) ? 'W' : 'E';
+    latsign = (lat < 0) ? 'S' : 'N';
+
+	url_base = 'https://storage.googleapis.com/water-noah.appspot.com/image_tif/change_';
+	var image_url = url_base + Math.abs(lng) + lngsign + '_' + Math.abs(lat) + latsign + '.png';
+	var image_bounds = [[lat, lng], [lat - 10, lng + 10]];
+	image = L.imageOverlay(image_url, image_bounds).setOpacity(0.3);
+	image.addTo(mymap);
+}
+
 function findClosest(lngLat) {
     lng = lngLat.lng;
     lat = lngLat.lat;
+    loadPrecipitationData(lat, lng);
     lng_sign = (lng < 0) ? 'W' : 'E';
     lat_sign = (lat < 0) ? 'S' : 'N';
     lng = (lng < 0) ? lng*(-1) : lng;
@@ -110,20 +118,33 @@ function findClosest(lngLat) {
 
     recreated_lng = 1.25 + (x - 1) * 2.5;
     recreated_lat = 1.25 + (y - 1) * 2.5;
-
     // createTable(recreated_lng, recreated_lat, lng_sign, lat_sign);
 }
 
-zoomlevel = 8.1;
 mymap.on('click', function(e) {
     console.log(e.latlng);
     mymap.flyTo([e.latlng.lat, e.latlng.lng], 8);
     // findClosest(e.latlng);
+    coordData = {
+        'lat': e.latlng.lat,
+        'lng': e.latlng.lng
+    };
+
+    $.ajax({
+        url: "/onclick",
+        type: 'GET',
+        data: coordData,
+        success: function (result) {
+            console.log(result);
+        }
+    });
+
     var marker = L.marker(e.latlng).addTo(mymap);
     var popUp = L.popup({ offset: [0, -40] })
        .setLatLng(e.latlng)
        .setContent("<div id='iri-graph'>YIKES!</div>")
        .addTo(mymap);
+
     $("#side-bar").dialog({ position: { my: "right top", at: "right top", of: window},
     						classes: {"ui-dialog": "add-margin"}});
 });
@@ -137,4 +158,7 @@ document.getElementById('zoomButton').addEventListener('click', function () {
     mymap.flyTo([30.52, 18.34], 2.5);
     $(".leaflet-popup-close-button")[0].click();
     $('#side-bar').dialog('destroy');
+    if (mymap.hasLayer(image)) {
+		mymap.removeLayer(image);
+	}
 });
