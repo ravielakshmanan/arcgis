@@ -1,28 +1,23 @@
 import os
 from flask import Flask, render_template, redirect, request, url_for
 from google.cloud import storage
+import datetime, json
+from pathlib import Path
 
 app = Flask(__name__)
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = './noah_credentials.json'
 os.environ["CLOUD_STORAGE_BUCKET"] = 'water-noah.appspot.com'
 
-# data_dictionary = 'data_dictionary.json'
-data_dictionary = 'test.json'
+data_dictionary = 'data_dictionary.json'
+# data_dictionary = 'test.json'
 
 def get_gc_iri_data():
     gcs = storage.Client()
     bucket = gcs.get_bucket(os.environ["CLOUD_STORAGE_BUCKET"])
 
     blob = bucket.get_blob(data_dictionary)
-    downloaded_blob = blob.download_as_string().decode("utf-8")
-
-    return downloaded_blob
-
-def find_closest_location(lat, lng):
-	# Function to get the closest coordinates
-	blob = get_gc_iri_data()
-
+    blob.download_to_filename(data_dictionary)
 
 @app.route('/')
 def load_home():
@@ -37,11 +32,32 @@ def render_map():
 def open_dataviz():
     lat = request.args.get('lat')
     lng = request.args.get('lng')
+    latSign = request.args.get('latSign')
+    lngSign = request.args.get('lngSign')
 
-    data = find_closest_location(lat, lng);
+    print("Loading data...")
+    myFile = Path(data_dictionary)
+    if not myFile.exists():
+        print(datetime.datetime.now())
+        get_gc_iri_data()
+        print(datetime.datetime.now())
 
-    return blob
+    print("File reading")
+    with open(data_dictionary) as f:
+        data = json.load(f)
+    print("File read")
+
+    key = '(' + lng + lngSign + ', ' + lat + latSign + ')'
+    print(key)
+    if key in data:
+        return str(data[key])
+
+    return "-1"
 
 if __name__ == '__main__':
-   app.run(host='127.0.0.1', port=8080, debug=True)
-   # app.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='127.0.0.1', port=8080, debug=True)
+    # app.run(host='0.0.0.0', port=8080, debug=True)
+
+
+
+# the format is (long,lat): {"dates":[], "data":[]}
