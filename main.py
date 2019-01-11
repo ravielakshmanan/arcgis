@@ -11,48 +11,36 @@ os.environ["CLOUD_STORAGE_BUCKET"] = 'water-noah.appspot.com'
 data_dictionary = 'test.json'
 
 def get_gc_iri_data():
-	gcs = storage.Client()
-	bucket = gcs.get_bucket(os.environ["CLOUD_STORAGE_BUCKET"])
+    gcs = storage.Client()
+    bucket = gcs.get_bucket(os.environ["CLOUD_STORAGE_BUCKET"])
 
-	blob = bucket.get_blob(data_dictionary)
-	downloaded_blob = blob.download_as_string().decode("utf-8")
+    blob = bucket.get_blob(data_dictionary)
+    downloaded_blob = blob.download_as_string().decode("utf-8")
 
-	return downloaded_blob
+    return downloaded_blob
 
-def find_closest_location(coords):
-	blob = get_gc_iri_data();
+def find_closest_location(lat, lng):
+	# Function to get the closest coordinates
+	blob = get_gc_iri_data()
 
-	lng = coords.lng;
-	lat = coords.lat;
-	lng_sign = (lng < 0) ? 'W' : 'E';
-	lat_sign = (lat < 0) ? 'S' : 'N';
-	lng = (lng < 0) ? lng*(-1) : lng;
-	lat = (lat < 0) ? lat*(-1) : lat;
-
-	x = Math.round(1 + (lng - 1.25)/2.5);
-	y = Math.round(1 + (lat - 1.25)/2.5);
-
-	recreated_lng = 1.25 + (x - 1) * 2.5;
-	recreated_lat = 1.25 + (y - 1) * 2.5;
-
-
-# the format is (lat,long): {"dates":[], "data":[]}
 
 @app.route('/')
 def load_home():
-	return render_template("index.html")
+    return render_template("index.html")
 
 @app.route('/render_map')
 def render_map():
-	return render_template("render_map.html")
+    return render_template("render_map.html")
 
 
-@app.route('/render_map/<coords>', methods=['POST'])
-def open_dataviz(coords):
-	
+@app.route('/onclick', methods=['GET', 'POST'])
+def open_dataviz():
+    lat = request.args.get('lat')
+    lng = request.args.get('lng')
 
+    data = find_closest_location(lat, lng);
 
-	return render_template("render_map.html")
+    return blob
 
 if __name__ == '__main__':
    app.run(host='127.0.0.1', port=8080, debug=True)
