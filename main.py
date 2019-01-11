@@ -3,14 +3,17 @@ from flask import Flask, render_template, redirect, request, url_for
 from google.cloud import storage
 import datetime, json
 from pathlib import Path
-# import cloudstorage as gcs
 
 app = Flask(__name__)
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = './noah_credentials.json'
+################################################################
+#TODO: REMOVE '/' IF DOWNLOAD FILE DOES NOT WORK
 os.environ["CLOUD_STORAGE_BUCKET"] = '/water-noah.appspot.com'
+################################################################
 
 data_dictionary = 'data_dictionary.json'
+flag = ""
 # data_dictionary = 'test.json'
 
 def get_gc_iri_data():
@@ -19,6 +22,15 @@ def get_gc_iri_data():
 
     blob = bucket.get_blob(data_dictionary)
     blob.download_to_filename(data_dictionary)
+
+    ############################################################
+    #TODO: UNCOMMENT BELOW IF DOWNLOAD OF FILE DOES NOT WORK
+    # downloaded_blob = blob.download_as_string().decode("utf-8")
+    # print(type(downloaded_blob))
+    # data = json.loads(downloaded_blob)
+    # print(type(data))
+    # return data
+    ############################################################
 
 @app.route('/')
 def load_home():
@@ -36,14 +48,8 @@ def open_dataviz():
     latSign = request.args.get('latSign')
     lngSign = request.args.get('lngSign')
 
-    # print("Loading data...")
-
-    # filename = os.environ["CLOUD_STORAGE_BUCKET"] + '/' + data_dictionary
-    # gcs_file = gcs.open(filename)
-    # contents = gcs_file.read()
-    # gcs_file.close()
-    # print(type(contents))
-
+    #############################################################
+    #TODO: COMMENT BELOW IF DOWNLOAD OF FILE DOES NOT WORK
     myFile = Path(data_dictionary)
     if not myFile.exists():
         print(datetime.datetime.now())
@@ -55,11 +61,20 @@ def open_dataviz():
         data = json.load(f)
     f.close()
     # print("File read")
+    #############################################################
 
-    key = '(' + lng + lngSign + ', ' + lat + latSign + ')'
-    print(key)
-    if key in data:
-        return str(data[key])
+    #############################################################
+    #TODO: UNCOMMENT IF DOWNLOAD OF FILE DOES NOT WORK
+    # if flag == "":
+    #     print(datetime.datetime.now())
+    #     json_data = get_gc_iri_data()
+    #     print(datetime.datetime.now())
+    # flag = "done"
+    # key = '(' + lng + lngSign + ', ' + lat + latSign + ')'
+    # print(key)
+    # if key in json_data:
+    #     return str(json_data[key])
+    #############################################################
 
     return "-1"
 
