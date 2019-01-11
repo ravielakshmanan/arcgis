@@ -14,17 +14,7 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 
 var searchControl = L.Control.geocoder({
         defaultMarkGeocode: false
-    })
-    .on('markgeocode', function(e) {
-        var bbox = e.geocode.bbox;
-        var poly = L.polygon([
-             bbox.getSouthEast(),
-             bbox.getNorthEast(),
-             bbox.getNorthWest(),
-             bbox.getSouthWest()
-        ]).addTo(mymap);
-        mymap.fitBounds(poly.getBounds());
-        });
+    });
 
 document.getElementById('geocoder').appendChild(searchControl.onAdd(map));
 
@@ -100,7 +90,7 @@ function loadPrecipitationData(lat, lng) {
 	url_base = 'https://storage.googleapis.com/water-noah.appspot.com/image_tif/change_';
 	var image_url = url_base + Math.abs(lng) + lngsign + '_' + Math.abs(lat) + latsign + '.png';
 	var image_bounds = [[lat, lng], [lat - 10, lng + 10]];
-	image = L.imageOverlay(image_url, image_bounds).setOpacity(0.4);
+	image = L.imageOverlay(image_url, image_bounds).setOpacity(0.3);
 	image.addTo(mymap);
 }
 
@@ -135,22 +125,29 @@ function findClosest(lngLat) {
         success: function (res) {
             new_res = res.replace(/'/g, '"');
             result = JSON.parse(new_res);
-            // console.log(result)
-            var marker = new L.Marker(coords)
-                .bindPopup('<div id="iri-graph"></div>')
-                .on('popupopen', function (e) {
-                    Plotly.newPlot('iri-graph', [{
-                        x: result['date'],
-                        y: result['data'],
-                        name: 'Precipitation',
-                        type: 'scatter'
-                    }], {
-                        title: 'Precipitation Data for ', // + placeName + ' (' + lng + ", " + lat + ')',
-                        width: 300,
-                        height: 150
-                    });
-                }).addTo(mymap);
-            marker.openPopup();
+            $.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=' + lngLat.lat + '&lon=' + lngLat.lng, function(geores) {
+                console.log(geores);
+                if (geores['display_name'])
+                    placeName = "<br>" + geores['display_name'] + "<br>";
+                else
+                    placeName = "<br>";
+                var marker = new L.Marker(coords)
+                    .bindPopup('<div id="iri-graph"></div>', {maxWidth: "auto", offset: [-350, 0]})
+                    .on('popupopen', function (e) {
+                        Plotly.newPlot('iri-graph', [{
+                            x: result['dates'],
+                            y: result['data'],
+                            name: 'Precipitation',
+                            type: 'scatter'
+                        }], {
+                            title: 'Precipitation Data for ' + placeName + ' (' + recreated_lng + lng_sign + ", " + recreated_lat + lat_sign + ')',
+                            xaxis: {title: 'Date Range'},
+                            yaxis: {title: 'Precipitation Anomaly'},
+                            height: 380
+                        });
+                    }).addTo(mymap);
+                marker.openPopup();
+            });
         }
     });
     // createTable(recreated_lng, recreated_lat, lng_sign, lat_sign);
@@ -159,7 +156,7 @@ function findClosest(lngLat) {
 mymap.on('click', function(e) {
     console.log(e.latlng);
     coords = e.latlng;
-    mymap.flyTo([e.latlng.lat, e.latlng.lng], 8);
+    mymap.flyTo([e.latlng.lat+1, e.latlng.lng], 8);
     findClosest(e.latlng);
 
     $("#side-bar").dialog({ position: { my: "right top", at: "right top", of: window},

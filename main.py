@@ -3,11 +3,12 @@ from flask import Flask, render_template, redirect, request, url_for
 from google.cloud import storage
 import datetime, json
 from pathlib import Path
+# import cloudstorage as gcs
 
 app = Flask(__name__)
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = './noah_credentials.json'
-os.environ["CLOUD_STORAGE_BUCKET"] = 'water-noah.appspot.com'
+os.environ["CLOUD_STORAGE_BUCKET"] = '/water-noah.appspot.com'
 
 data_dictionary = 'data_dictionary.json'
 # data_dictionary = 'test.json'
@@ -35,17 +36,25 @@ def open_dataviz():
     latSign = request.args.get('latSign')
     lngSign = request.args.get('lngSign')
 
-    print("Loading data...")
+    # print("Loading data...")
+
+    # filename = os.environ["CLOUD_STORAGE_BUCKET"] + '/' + data_dictionary
+    # gcs_file = gcs.open(filename)
+    # contents = gcs_file.read()
+    # gcs_file.close()
+    # print(type(contents))
+
     myFile = Path(data_dictionary)
     if not myFile.exists():
         print(datetime.datetime.now())
         get_gc_iri_data()
         print(datetime.datetime.now())
 
-    print("File reading")
+    # print("File reading")
     with open(data_dictionary) as f:
         data = json.load(f)
-    print("File read")
+    f.close()
+    # print("File read")
 
     key = '(' + lng + lngSign + ', ' + lat + latSign + ')'
     print(key)
