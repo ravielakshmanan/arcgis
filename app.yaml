@@ -1,5 +1,5 @@
 runtime: python37
-threadsafe: true
+# threadsafe: true
 env_variables:
   CLOUD_STORAGE_BUCKET: 'water-noah.appspot.com'
   BUCKET_NAME: 'water-noah.appspot.com'
