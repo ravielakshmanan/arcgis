@@ -1,4 +1,8 @@
 runtime: python37
 env_variables:
-    CLOUD_STORAGE_BUCKET: 'water-noah.appspot.com'
-    BUCKET_NAME: 'water-noah.appspot.com'
+  CLOUD_STORAGE_BUCKET: 'water-noah.appspot.com'
+  BUCKET_NAME: 'water-noah.appspot.com'
+resources:
+  cpu: 2
+  memory_gb: 2.3
+  disk_size_gb: 10
