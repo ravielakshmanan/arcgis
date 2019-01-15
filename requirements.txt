@@ -1,2 +1,4 @@
 Flask==1.0.2
 google-cloud-storage==1.13.2
+firebase-admin==2.14.0
+google-cloud-firestore==0.31.0

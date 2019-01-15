@@ -3,31 +3,47 @@ from flask import Flask, render_template, redirect, request, url_for
 from google.cloud import storage
 import datetime, json
 from pathlib import Path
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
 
 app = Flask(__name__)
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = './noah_credentials.json'
-os.environ["CLOUD_STORAGE_BUCKET"] = 'water-noah.appspot.com'
+collection_name = "precipitation"
+# collection_name = "precipitation_test"
 
-data_dictionary = 'data_dictionary.json'
-status_flag = ''
-json_data = {}
-# data_dictionary = 'test.json'
+def process_data(doc_ref):
+    docs = doc_ref.get()
+    data_dict = []
+    for doc in docs:
+        data_dict.append(doc.to_dict())
+    print("The size of the collection is: " + str(len(data_dict)))
+    return data_dict
 
-def get_gc_iri_data():
-    gcs = storage.Client()
-    bucket = gcs.get_bucket(os.environ["CLOUD_STORAGE_BUCKET"])
+def get_processed_data(dict):
+    processed_data_dict = {}
+    
+    for row in dict:
+        coords = "(" + row['Longitude'] + ", " + row['Latitude'] + ")"
+        anomaly = row['Precipitation Anomaly']
+        date = row['Time'][8:]
+        if coords not in processed_data_dict:
+            processed_data_dict[coords] = {"dates":[date], "data":[anomaly]}
+        else:
+            value = processed_data_dict[coords]
+            dates_list = value["dates"].append(date)
+            data_list = value["data"].append(anomaly)
+            processed_data_dict[coords] = {"dates":dates_list, "data":data_list}
 
-    blob = bucket.get_blob(data_dictionary)
-    # blob.download_to_filename(data_dictionary)
+    return processed_data_dict
 
-    ############################################################
-    #TODO: UNCOMMENT BELOW IF DOWNLOAD OF FILE DOES NOT WORK
-    downloaded_blob = blob.download_as_string().decode("utf-8")
-    print(downloaded_blob)
-    data = json.loads(downloaded_blob)
-    return data
-    ############################################################
+
+def get_iri_data_from_store(store):
+    doc_ref = store.collection(collection_name)
+    data_dict = process_data(doc_ref)
+    processed_data_dict = get_processed_data(data_dict)
+    return processed_data_dict
 
 @app.route('/')
 def load_home():
@@ -40,41 +56,24 @@ def render_map():
 
 @app.route('/onclick', methods=['GET', 'POST'])
 def open_dataviz():
-    global status_flag
-    global json_data
     lat = request.args.get('lat')
     lng = request.args.get('lng')
     latSign = request.args.get('latSign')
     lngSign = request.args.get('lngSign')
 
-    #############################################################
-    #TODO: COMMENT BELOW IF DOWNLOAD OF FILE DOES NOT WORK
-    # myFile = Path(data_dictionary)
-    # if not myFile.exists():
-    #     print(datetime.datetime.now())
-    #     get_gc_iri_data()
-    #     print(datetime.datetime.now())
+    if (not len(firebase_admin._apps)):
+        cred = credentials.Certificate(os.environ["GOOGLE_APPLICATION_CREDENTIALS"])
+        firebase_admin.initialize_app(cred)
 
-    # # print("File reading")
-    # with open(data_dictionary) as f:
-    #     data = json.load(f)
-    # f.close()
-    # print("File read")
-    #############################################################
+        db = firestore.client()
+        processed_data_dict = get_iri_data_from_store(db)
 
-    #############################################################
-    #TODO: UNCOMMENT IF DOWNLOAD OF FILE DOES NOT WORK
-    if status_flag == '':
-        print(datetime.datetime.now())
-        json_data = get_gc_iri_data()
-        print(datetime.datetime.now())
-    status_flag = 'done'
     key = '(' + lng + lngSign + ', ' + lat + latSign + ')'
-    print(key)
-    if key in json_data:
-        return str(json_data[key])
-    #############################################################
-
+    print("The coordinates passed are: " + key)
+    if key in processed_data_dict:
+        return str(processed_data_dict[key])
+    
+    print("No match found!")    
     return "-1"
 
 if __name__ == '__main__':
