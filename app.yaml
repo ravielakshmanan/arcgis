@@ -1,8 +1,11 @@
 runtime: python37
 # threadsafe: true
 env_variables:
-  CLOUD_STORAGE_BUCKET: 'water-noah.appspot.com'
-  BUCKET_NAME: 'water-noah.appspot.com'
+  CLOUD_STORAGE_BUCKET: 'noah-water.appspot.com'
+  BUCKET_NAME: 'noah-water.appspot.com'
+libraries:
+- name: grpcio
+  version: latest
 # instance_class: F2
 # automatic_scaling:
 #   target_cpu_utilization: 0.65

@@ -33,6 +33,7 @@ def get_data_from_store(store):
 def put_data_to_store(store):
   data = []
   headers = []
+  print("Preparing to read CSV...")
   with open(file_path) as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     line_count = 0
@@ -72,8 +73,10 @@ cred = credentials.Certificate(os.environ["GOOGLE_APPLICATION_CREDENTIALS"])
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()
+print("Inserting data into Firestore...")
 put_data_to_store(db)
 
+print("Fetching data from Firestore...")
 df = get_data_from_store(db)
 
 try:
