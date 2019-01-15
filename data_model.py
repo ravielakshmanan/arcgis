@@ -47,7 +47,8 @@ def put_data_to_store(store):
                 obj[headers[idx]] = item
             data.append(obj)
             line_count += 1
-  print(f'Processed {line_count} lines.')
+  # print(f'Processed {line_count} lines.')
+  print("Processed {} lines.".format(line_count))
 
   for batched_data in batch_data(data, 499):
     item_count = 0
@@ -57,7 +58,8 @@ def put_data_to_store(store):
         batch.set(doc_ref, data_item)
         item_count += 1
     batch.commit()
-    print(f'Processed {item_count} lines.')
+    # print(f'Processed {item_count} lines.')
+    print("Processed {} lines.".format(item_count))
 
   print("Done!")
 
