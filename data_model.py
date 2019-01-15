@@ -3,14 +3,23 @@ import csv
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
+from google.cloud import storage
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = './noah_credentials.json'
 
 # dataset available from Cloud Storage Bucket (4966273 lines)
 file_path = "./iri_dataset.csv"
-collection_name = "precipitation"
+file_name = "iri_dataset.csv"
+collection_name = "precipitation_data"
 # file_path = "./iri_data.csv"
 # collection_name = "precipitation_test"
+
+def download_iri_data_from_gc():
+  client = storage.Client()
+  bucket = client.get_bucket('noah-water.appspot.com')
+  blob = bucket.blob(file_name)
+  blob.download_to_filename(file_name)
+  print('Blob {} downloaded to {}.'.format(file_name,file_name))
 
 def batch_data(iterable, n=1):
     l = len(iterable)
@@ -41,13 +50,20 @@ def put_data_to_store(store):
   print(f'Processed {line_count} lines.')
 
   for batched_data in batch_data(data, 499):
+    item_count = 0
     batch = store.batch()
     for data_item in batched_data:
         doc_ref = store.collection(collection_name).document()
         batch.set(doc_ref, data_item)
+        item_count += 1
     batch.commit()
+    print(f'Processed {item_count} lines.')
 
   print("Done!")
+
+# nohup python data_model.py > my_output.log &
+# Fetch CSV from cloud storage
+# download_iri_data_from_gc()
 
 # Use a service account
 cred = credentials.Certificate(os.environ["GOOGLE_APPLICATION_CREDENTIALS"])

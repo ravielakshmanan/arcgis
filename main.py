@@ -10,7 +10,7 @@ from firebase_admin import firestore
 app = Flask(__name__)
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = './noah_credentials.json'
-collection_name = "precipitation"
+collection_name = "precipitation_data"
 # collection_name = "precipitation_test"
 
 def process_data(doc_ref):
