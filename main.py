@@ -10,10 +10,10 @@ app = Flask(__name__)
 logger = logging.getLogger()
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = './mysql_credentials.json'
-os.environ["CLOUD_SQL_CONNECTION_NAME"] ='noah-water:us-east4:precipitation'
-os.environ["DB_USER"] = 'root'
-os.environ["DB_PASS"] = 'y3hsG5O7cDCPv00B'
-os.environ["DB_NAME"] = 'prec_anomaly'
+os.environ["CLOUD_SQL_CONNECTION_NAME"] ='***'
+os.environ["DB_USER"] = '***'
+os.environ["DB_PASS"] = '***'
+os.environ["DB_NAME"] = '***'
 
 # Manage SQL connection pool
 db = sqlalchemy.create_engine(
