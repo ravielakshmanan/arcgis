@@ -1,48 +1,73 @@
 import os
+import sqlalchemy
+import logging
 from flask import Flask, render_template, redirect, request, url_for
-from google.cloud import storage
 import datetime, json
-from pathlib import Path
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import firestore
+from collections import defaultdict
 
 app = Flask(__name__)
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = './noah_credentials.json'
-collection_name = "precipitation_data"
-# collection_name = "precipitation_test"
+logger = logging.getLogger()
 
-def process_data(doc_ref):
-    docs = doc_ref.get()
-    data_dict = []
-    for doc in docs:
-        data_dict.append(doc.to_dict())
-    print("The size of the collection is: " + str(len(data_dict)))
-    return data_dict
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = './mysql_credentials.json'
+os.environ["CLOUD_SQL_CONNECTION_NAME"] ='***'
+os.environ["DB_USER"] = '***'
+os.environ["DB_PASS"] = '***'
+os.environ["DB_NAME"] = '***'
 
-def get_processed_data(dict):
-    processed_data_dict = {}
-    
-    for row in dict:
-        coords = "(" + row['Longitude'] + ", " + row['Latitude'] + ")"
-        anomaly = row['Precipitation Anomaly']
-        date = row['Time'][8:]
-        if coords not in processed_data_dict:
-            processed_data_dict[coords] = {"dates":[date], "data":[anomaly]}
-        else:
-            value = processed_data_dict[coords]
-            dates_list = value["dates"].append(date)
-            data_list = value["data"].append(anomaly)
-            processed_data_dict[coords] = {"dates":dates_list, "data":data_list}
+iri_data = {}
 
-    return processed_data_dict
+# Manage SQL connection pool
+db = sqlalchemy.create_engine(
+    sqlalchemy.engine.url.URL(
+        drivername='mysql+pymysql',
+        username=os.environ["DB_USER"],
+        password=os.environ["DB_PASS"],
+        database=os.environ["DB_NAME"],
+        query={
+            'unix_socket': '/cloudsql/{}'.format(os.environ["CLOUD_SQL_CONNECTION_NAME"])
+        }
+    ),
+    pool_size=10,
+    max_overflow=2,
+    pool_timeout=30,
+    pool_recycle=1800
+)
 
+def get_processed_data(data):
+  processed_data_dict = defaultdict(list)
+  
+  iri_data_list = []
+  for lat, long, anomaly, date in data:
+    date = date.replace('\r', '')
+    coords = "(" + long + ", " + lat + ")"
+    anomaly = anomaly
+    date = date[8:]
+    data_tuple = (coords, anomaly, date)
+    iri_data_list.append(data_tuple)
 
-def get_iri_data_from_store(store):
-    doc_ref = store.collection(collection_name)
-    data_dict = process_data(doc_ref)
-    processed_data_dict = get_processed_data(data_dict)
+  print("The size of the data list: " + str(len(iri_data_list)))
+
+  for coords, anomaly, date in iri_data_list:
+    if coords not in processed_data_dict:
+        temp_dict = {'dates': [date], 'data': [anomaly]}
+        processed_data_dict[coords] = temp_dict
+    else:
+        processed_data_dict[coords]['dates'].append(date)
+        processed_data_dict[coords]['data'].append(anomaly)
+
+  return processed_data_dict
+
+def get_iri_data_from_gcloud():
+    with db.connect() as conn:
+        anomaly_data = conn.execute(
+            "SELECT * FROM precipitation"
+        ).fetchall()
+
+        print("The size of data returned: " + str(len(anomaly_data)))
+
+        processed_data_dict = get_processed_data(anomaly_data)
+
     return processed_data_dict
 
 @app.route('/')
@@ -61,17 +86,15 @@ def open_dataviz():
     latSign = request.args.get('latSign')
     lngSign = request.args.get('lngSign')
 
-    if (not len(firebase_admin._apps)):
-        cred = credentials.Certificate(os.environ["GOOGLE_APPLICATION_CREDENTIALS"])
-        firebase_admin.initialize_app(cred)
+    global iri_data
 
-        db = firestore.client()
-        processed_data_dict = get_iri_data_from_store(db)
+    if not iri_data:
+        iri_data = get_iri_data_from_gcloud()
 
     key = '(' + lng + lngSign + ', ' + lat + latSign + ')'
     print("The coordinates passed are: " + key)
-    if key in processed_data_dict:
-        return str(processed_data_dict[key])
+    if key in iri_data:
+        return str(iri_data[key])
     
     print("No match found!")    
     return "-1"
