@@ -22,7 +22,7 @@ var searchControl = L.Control.geocoder({
              bbox.getNorthWest(),
              bbox.getSouthWest()
         ]).addTo(mymap);
-        map.fitBounds(poly.getBounds());
+        mymap.fitBounds(poly.getBounds());
     });
 
 document.getElementById('geocoder').appendChild(searchControl.onAdd(mymap));
@@ -109,6 +109,7 @@ mymap.on('click', function(e) {
 
     $("#side-bar").dialog({ position: { my: "right top", at: "right top", of: window},
     						classes: {"ui-dialog": "add-margin"}});
+    $("#side-bar").dialog('open');
 });
 
 $('#intro-bar').dialog({height: 380,
