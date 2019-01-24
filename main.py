@@ -10,12 +10,10 @@ app = Flask(__name__)
 logger = logging.getLogger()
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = './mysql_credentials.json'
-os.environ["CLOUD_SQL_CONNECTION_NAME"] ='***'
-os.environ["DB_USER"] = '***'
-os.environ["DB_PASS"] = '***'
-os.environ["DB_NAME"] = '***'
-
-iri_data = {}
+os.environ["CLOUD_SQL_CONNECTION_NAME"] ='noah-water:us-east4:precipitation'
+os.environ["DB_USER"] = 'root'
+os.environ["DB_PASS"] = 'y3hsG5O7cDCPv00B'
+os.environ["DB_NAME"] = 'prec_anomaly'
 
 # Manage SQL connection pool
 db = sqlalchemy.create_engine(
@@ -58,11 +56,13 @@ def get_processed_data(data):
 
   return processed_data_dict
 
-def get_iri_data_from_gcloud():
+def get_iri_data_from_gcloud(long, lat):
+    
+    query = "SELECT * FROM precipitation where latitude = '" + lat + "' AND longitude = '" + long + "'"
+    print("About to execute query: " + query)
+
     with db.connect() as conn:
-        anomaly_data = conn.execute(
-            "SELECT * FROM precipitation"
-        ).fetchall()
+        anomaly_data = conn.execute(query).fetchall()
 
         print("The size of data returned: " + str(len(anomaly_data)))
 
@@ -86,10 +86,7 @@ def open_dataviz():
     latSign = request.args.get('latSign')
     lngSign = request.args.get('lngSign')
 
-    global iri_data
-
-    if not iri_data:
-        iri_data = get_iri_data_from_gcloud()
+    iri_data = get_iri_data_from_gcloud(lng + lngSign, lat + latSign)
 
     key = '(' + lng + lngSign + ', ' + lat + latSign + ')'
     print("The coordinates passed are: " + key)
