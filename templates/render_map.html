@@ -27,30 +27,22 @@
 		</a>
 		<button id="zoomButton" class="zoom-button">Reset Map</button>
 		<div id='geocoder' class='geocoder'></div>
+
+		<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>	
 		<div id='intro-bar' title='Welcome to NOAH!'>
-			Towns dotted along Kentucky’s Appalachian Mountain range and Utah’s northern border in the United States
-			<br>
-			Communities tucked along India’s eastern coastline
-			<br>
-			Cities along Argentina’s central riverway.
-			<br>
-			<br>
-			Worldwide, more and more people are staring down changes in the most abundant yet precious resource: water. 
-			<br>
-			<br>
-			The World Health Organization estimates that 2.1 billion people, nearly 30 percent of the world’s population, don’t have access to safe drinking water from their homes.
-			<br>
-			<br>
-			Sea-level rise, droughts and changes in rainfall due to climate change are set to make things tougher. For many communities, they already have.
-			<br>
-			<br>
-			This map provides the data, showing you how much surface water and rainfall has changed near you.
-			<br>
-			<br>
-			NOAH is built for  anyone across the world interested in better understanding their environment. The ultimate goal is to make water data more accessible and understandable.
-			<br>
-			<br>
-			To see how your community is doing, locate it on the map, and click.  
+            In Kaliapat, a coastal village in India, Kuntala Rout spends as many as four hours a day filling up vessels with water so her family has enough to drink. Rout says she tries to drink as little water as she can to avoid extra trips to the hand pump. 
+            <br>
+            <br>
+            Rout is not alone. From Kaliapat, to communities along Utah’s northern border in the U.S., to cities in central Argentina, water availability is a pressing issue that transcends borders.
+            <br>
+            <br>
+            Unprecedented climate change, which is exacerbating sea-level rise, droughts and changes in rainfall, is worsening the problem. For many communities, it already has.
+            <br>
+            <br>
+            This project, NOAH, makes water data accessible and understandable. It shows you how much surface water and rainfall has changed near you so you can  better understand your surroundings. 
+            <br>
+            <br>
+            NOAH is built for anyone interested in learning about their environment. To see how your community is doing, click its location on the map, or use the search bar function. Start exploring!
 		</div>
 		<div id='side-bar' title="Here's what you're seeing">
 			The pop-up graph demonstrates the monthly rainfall highs and lows in the region. 
@@ -62,5 +54,13 @@
 			Questions? Ping us at <a href="mailto:water.appspot@gmail.com">water.appspot@gmail.com.</a>
 		</div>
 		<script src="{{ url_for('static', filename='js/render_map.js') }}"></script>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="{{ url_for('static', filename='js/materialize.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/init.js') }}"></script>
+		<script type="text/javascript">
+		    $(document).ready(function(){
+		      $('#welcome').modal();
+		    });
+		</script>
 	</body>
 </html>

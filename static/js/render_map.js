@@ -21,11 +21,11 @@ var searchControl = L.Control.geocoder({
              bbox.getNorthEast(),
              bbox.getNorthWest(),
              bbox.getSouthWest()
-        ]).addTo(map);
+        ]).addTo(mymap);
         map.fitBounds(poly.getBounds());
     });
 
-document.getElementById('geocoder').appendChild(searchControl.onAdd(map));
+document.getElementById('geocoder').appendChild(searchControl.onAdd(mymap));
 
 function loadPrecipitationData(lat, lng) {
 	lat = (parseInt(Math.floor(lat/10)) * 10) + 10;
