@@ -27,67 +27,6 @@ var searchControl = L.Control.geocoder({
 
 document.getElementById('geocoder').appendChild(searchControl.onAdd(map));
 
-// function createTable(recreated_lng, recreated_lat, lng_sign, lat_sign) {
-//     lng = String(recreated_lng) + lng_sign;
-//     lat = String(recreated_lat) + lat_sign;
-//     var map_x = [];
-//     var map_y = [];
-//
-//     var row;
-//     console.log(lng, lat);
-//     for(i = 0; i < data.length; i++) {
-//         if(data[i].Longitude == lng && data[i].Latitude == lat) {
-//             row = data[i];
-//             time = row.Time.split(" 16 ");
-//             map_x.push(time.splice(-1)[0]);
-//             map_y.push(row["Precipitation Anomaly"]);
-//         }
-//     }
-//
-//     geocoder.mapboxClient.geocodeReverse({
-//         latitude: coords.lngLat.lat,
-//         longitude: coords.lngLat.lng
-//     }, function(err, res) {
-//     	found_flag = 0;
-//     	if (res.features) {
-//     		for (i = 0; i < res.features.length; i++) {
-//     			var item = res.features[i];
-//     			if (item['id'].includes('place')) {
-//     				placeName = item['place_name'];
-//     				found_flag = 1;
-//     			}
-//     		}
-//     		if (found_flag == 0) {
-//     			placeName = res.features[0]['place_name'];
-//     		}
-//     	} else{
-//     		placeName = ""
-//     	}
-//
-//     	var marker = L.marker(e.latlng)
-//             .bindPopup("<div id='iri-graph'></div>")
-//             .on('popupopen', function(e) {
-//                 Plotly.newPlot('iri-graph', [{
-//                     x: [0, 1], //map_x,
-//                     y: [4, 6], //map_y,
-//                     name: 'Precipitation',
-//                     type: 'scatter'
-//                 }], {
-//                     title: 'Precipitation Data for ', // + placeName + ' (' + lng + ", " + lat + ')',
-//                     width: 300,
-//                     height: 150,
-//                     margin: {
-//                         l: 0,
-//                         r: 0,
-//                         b: 0,
-//                         t: 0,
-//                         pad: 0
-//                     }
-//                 });
-//             }).addTo(mymap);
-//     });
-// }
-
 function loadPrecipitationData(lat, lng) {
 	lat = (parseInt(Math.floor(lat/10)) * 10) + 10;
 	lng = (parseInt(Math.floor(lng/10)) * 10);
