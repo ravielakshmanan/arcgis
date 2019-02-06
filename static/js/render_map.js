@@ -36,8 +36,8 @@ function loadPrecipitationData(lat, lng) {
     latsign = (lat < 0) ? 'S' : 'N';
 
 	url_base = 'https://storage.googleapis.com/water-noah.appspot.com/image_tif/change_';
-	var image_url = url_base + Math.abs(lng) + lngsign + '_' + Math.abs(lat) + latsign + '.png';
-	var image_bounds = [[lat, lng], [lat - 10, lng + 10]];
+    var image_url = url_base + Math.abs(lng) + lngsign + '_' + Math.abs(lat) + latsign + '.png';
+    var image_bounds = [[lat, lng], [lat - 10, lng + 10]];
 	image = L.imageOverlay(image_url, image_bounds).setOpacity(0.3);
 	image.addTo(mymap);
 }
@@ -112,8 +112,8 @@ mymap.on('click', function(e) {
     $("#side-bar").dialog('open');
 });
 
-$('#intro-bar').dialog({height: 380,
-						width: 780,
+$('#intro-bar').dialog({height: 350,
+						width: 700,
 						modal:true,
                         resizable: false});
 

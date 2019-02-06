@@ -6,6 +6,7 @@
   <title>NOAH</title>
 
   <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/css?family=EB+Garamond" rel="stylesheet"> 
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="{{ url_for('static', filename='css/materialize.css') }}" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="{{ url_for('static', filename='css/style.css')}} " type="text/css" rel="stylesheet" media="screen,projection"/>
@@ -16,10 +17,20 @@
       filter: blur(3px);
     }
 
-    .cc{
+    .cc {
       border:1px solid black; 
       min-height:400px; 
       max-height:400px
+    }
+
+    body {
+      font-size: 20px !important;
+      font-family: 'EB Garamond', serif !important;
+      background: linear-gradient(180deg, #ffffff 0%, #f6f6f6 51%, #dedede 75%);
+    }
+
+    .bio {
+      font-size: 18px !important;
     }
 
 
@@ -34,6 +45,7 @@
           <a href="#">Home</a>
           <a href="#about">Breaking Things Down</a>
           <a href="#research">Data Sources</a>
+          <a href="#origin">Origin Story</a>
           <a href="#team">The Team</a>
           <a href="#contact">Contact Us</a>
         </li>
@@ -76,35 +88,24 @@
     <div class="card darken-1">
       <div class="card-content">
         <p class="left-align light">
-          <strong>Origin story:</strong> The idea for NOAH came in early 2018. Pietro Ceccato, a climate scientist, was teaching a course at Columbia University’s medical school on how to infuse climate data into public health work. Disha Shetty, a health journalist from India who was working toward her master’s in journalism, walked into the classroom to learn how to better use data in reporting on unprecedented climate changes. After a few courses, the two began chatting about a project that would combine journalism and climate data. 
+          Water availability dictates the wellbeing of entire communities. Yet, we tend to know very little about our water supplies. This map aims to change that by overlaying monthly rainfall deviations from the average onto changes in surface water patterns worldwide.  
           <br/>
           <br/>
-          While data on changes in surface water was available through the European Commission’s Joint Research Centre, it wasn’t combined with rainfall trends in a single map. Combining the two in NOAH paints a more complete picture of changes in the water cycle and highlights the impacts of human interventions. 
+          This project, NOAH, makes water more accessible and understandable. In regions where the amount of water in lakes and rivers has changed substantially, governments treat water data as a national secret. Recently, as more dams, dikes and homes have been built along waterways, downstream effects have manifested. For example, in southern Louisiana and coastal Bangladesh, dams constructed upstream have blocked water supply to communities downstream.
+          <br/>
+          <br/>
+          Unprecedented climate change is already increasing the extremes. Droughts are now longer and frequent, the monsoons more erratic. By comparing changes in the water surface level and rainfall highs and lows, you can begin to identify whether your community has been affected and how much. 
         </p>
       </div>
 
       <div class="card-tabs">
         <ul class="tabs tabs-fixed-width">
-          <li class="tab"><a class="active" href="#why">Why This Matters?</a></li>
-          <li class="tab"><a href="#call">Calling All Journalists</a></li>
+          <li class="tab"><a class="active" href="#why">Using NOAH</a></li>
+          <li class="tab"><a href="#call">Case Study</a></li>
         </ul>
       </div>
       <div class="card-content grey white lighten-4">
         <div id="why">
-          <p class="left-align light">
-            Water availability dictates the wellbeing of entire communities. Yet, we tend to know very little about our water supplies. This map aims to change that by overlaying monthly rainfall deviations from the average onto changes in surface water patterns worldwide.
-            <br/>
-            <br/>
-            This project, NOAH, makes water more accessible and understandable. In regions where the amount of water in lakes and rivers has changed substantially, governments treat water data as a national secret. Recently, as more dams, dikes and homes have been built along waterways, downstream effects have manifested. For example, in southern Louisiana and coastal Bangladesh, dams constructed upstream have blocked water supply to communities downstream.
-            <br/>
-            <br/>
-            Unprecedented climate change is already increasing the extremes. Droughts are now longer and frequent, the monsoons more erratic.
-            <br/>
-            <br/>
-            By comparing changes in the water surface level and rainfall highs and lows, you can begin to identify whether your community has been affected and how much.
-          </p>
-        </div>
-        <div id="call">
           <p class="left-align light">
             NOAH gives journalists  rich opportunities to discover, report and tell stories. Touring the world in NOAH, you can find a town where  the community’s reservoir is severely depleted, but rainfall has remained stable; raising questions about water management or upstream engineering. You may also stumble upon an area where little has changed on the surface, but where rainfall highs and lows have fluctuated dramatically. How has that changed the communities?
             <br/>
@@ -116,6 +117,17 @@
             <br/>
             <br/>
             We would also like to take this opportunity to express our gratitude to <a href="https://brown.columbia.edu/">The Brown Institute for Media Innovation</a>, without whose support this project would not have been possible.
+          </p>
+        </div>
+        <div id="call">
+          <p class="left-align light">
+            In Kaliapat, a coastal village in India, Kuntala Rout spends as many as four hours a day filling up vessels with water so her family has enough to drink. Rout says she tries to drink as little water as she can to avoid extra trips to the hand pump.
+            <br/>
+            <br/>
+            Rout is not alone. From Kaliapat, to communities along Utah’s northern border in the U.S., to cities in central Argentina, water availability is a pressing issue that transcends borders.
+            <br/>
+            <br/>
+            By using this map, Disha Shetty, a co-starter of NOAH, found that Kaliapat and its surrounding areas had seen a severe decrease in surface water in the past three decades. Read the story here. It’s an example of how the map and long-term climate data can be used to both locate areas facing distress and enhance storytelling. 
           </p>
         </div>
       </div>
@@ -154,6 +166,30 @@
         </div>
     </div>
   </div>
+
+  <div class="container" id="origin">
+    <div class="section">
+      <div class="row">
+        <div class="col s12 center">
+          <h3><i class="mdi-content-send brown-text"></i></h3>
+          <h4>Origin Story</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="card darken-1">
+        <div class="card-content grey white lighten-4">
+          <p class="left-align light">
+            The idea for NOAH came in early 2018. Pietro Ceccato, a climate scientist, was teaching a course at Columbia University’s medical school on how to infuse climate data into public health work. Disha Shetty, a health journalist from India who was working toward her master’s in journalism, walked into the classroom to learn how to better use data in reporting on unprecedented climate changes. After a few courses, the two began chatting about a project that would combine journalism and climate data. 
+            <br>
+            <br>
+            While data on changes in surface water was available through the European Commission’s Joint Research Centre, it wasn’t combined with rainfall trends in a single map. Combining the two in NOAH paints a more complete picture of changes in the water cycle and highlights the impacts of human interventions.
+          </p>
+        </div>
+    </div>
+  </div>
   
   <div class="container" id="team">
     <div class="section">
@@ -167,12 +203,12 @@
   </div>
 
   <div class="container">
-    <div class="row">
+    <div class="row bio">
       <div class="col s12 m6 l4">
         <div class="card grey darken-1 cc">
           <div class="card-content white-text">
-            <span class="card-title">Prof. Pietro Ceccato</span>
-            <p><strong>Prof. Ceccato</strong> was formerly the Lead Research Scientist of Environmental Monitoring Program at Columbia University's International Research Institute for Climate and Society. He is currently working at SPACEBEL, Liege, Belgium, and is in charge of developing applications of Remote Sensing for agriculture, forestry, natural disasters, human health and pest management.</p>
+            <span class="card-title"><u>Prof. Pietro Ceccato</u></span>
+            <p><strong>Prof. Ceccato</strong> was formerly the Lead Research Scientist of Environmental Monitoring Program at Columbia University's International Research Institute for Climate and Society. He is currently working at SPACEBEL, Belgium, and is in charge of developing applications of Remote Sensing for agriculture, forestry, natural disasters, human health and pest management.</p>
           </div>
         </div>
       </div>
@@ -180,7 +216,7 @@
       <div class="col s12 m6 l4">
         <div class="card grey darken-1 cc">
           <div class="card-content white-text">
-            <span class="card-title">Disha Shetty</span>
+            <span class="card-title"><u>Disha Shetty</u></span>
             <p><a target="_blank" href="https://twitter.com/dishashetty20"><strong>Disha Shetty</strong></a> is an award-winning Science journalist based out of India. She mainly writes about public health, climate change and the intersection between the two.</p>
           </div>
         </div>
@@ -189,8 +225,8 @@
       <div class="col s12 m6 l4">
         <div class="card grey darken-1 cc">
           <div class="card-content white-text">
-            <span class="card-title">Maya Miller</span>
-            <p><a target="_blank" href="https://twitter.com/mayatmiller"><strong>Maya Miller</strong></a> is a data-driven investigative journalist based out of the United States. She has written about the intersection of health and climate change for Climate Central, and has reported on a range of topics for Scientific American, ProPublica and The Chicago Tribune.</p>
+            <span class="card-title"><u>Maya Miller</u></span>
+            <p><a target="_blank" href="https://twitter.com/mayatmiller"><strong>Maya Miller</strong></a> is a data-driven investigative journalist based out of the United States. She has written about the intersection of health and climate change for Climate Central, and has reported on a range of topics for <i>Scientific American</i>, <i>ProPublica</i> and <i>The Chicago Tribune</i>.</p>
           </div>
         </div>
       </div>
@@ -198,7 +234,7 @@
       <div class="col s12 m6 l4">
         <div class="card grey darken-1 cc">
           <div class="card-content white-text">
-            <span class="card-title">Pankhuri Kumar</span>
+            <span class="card-title"><u>Pankhuri Kumar</u></span>
             <p><a target="_blank" href="https://pankhurikumar23.github.io/"><strong>Pankhuri Kumar</strong></a> is currently pursuing a dual master's in computer science and journalism from Columbia University.</p>
           </div>
         </div>
@@ -207,8 +243,8 @@
       <div class="col s12 m6 l4">
         <div class="card grey darken-1 cc">
           <div class="card-content white-text">
-            <span class="card-title">Ravie Lakshmanan</span>
-            <p><a target="_blank" href="https://ravielakshmanan.github.io/"><strong>Ravie Lakshmanan</strong></a> is a computational journalist currently working as a news engineer for Scroll.in. He has previously covered wealth management and Fin-Tech for Financial Planning as a reporter and data journalist.</p>
+            <span class="card-title"><u>Ravie Lakshmanan</u></span>
+            <p><a target="_blank" href="https://ravielakshmanan.github.io/"><strong>Ravie Lakshmanan</strong></a> is a computational journalist currently working as a news engineer for <i>Scroll.in</i>. He has previously covered wealth management and Fin-Tech for Financial Planning as a reporter and data journalist.</p>
           </div>
         </div>
       </div>
