@@ -37,4 +37,7 @@ gcloud sql connect precipitation --user=root
 Installation (for local run):
 https://cloud.google.com/sql/docs/mysql/sql-proxy#install
 
+mkdir /cloudsql
+chmod 777 /cloudsql
+
 ./cloud_sql_proxy -dir=/cloudsql --instances="noah-water:us-east4:precipitation" --credential_file="./mysql_credentials.json"
