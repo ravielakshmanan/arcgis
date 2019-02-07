@@ -10,10 +10,10 @@ app = Flask(__name__)
 logger = logging.getLogger()
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = './mysql_credentials.json'
-os.environ["CLOUD_SQL_CONNECTION_NAME"] ='***'
-os.environ["DB_USER"] = '***'
-os.environ["DB_PASS"] = '***'
-os.environ["DB_NAME"] = '***'
+os.environ["CLOUD_SQL_CONNECTION_NAME"] ='noah-water:us-east4:precipitation'
+os.environ["DB_USER"] = 'root'
+os.environ["DB_PASS"] = 'y3hsG5O7cDCPv00B'
+os.environ["DB_NAME"] = 'prec_anomaly'
 
 # Manage SQL connection pool
 db = sqlalchemy.create_engine(
@@ -60,6 +60,9 @@ def get_iri_data_from_gcloud(long, lat):
     
     query = "SELECT * FROM precipitation where latitude = '" + lat + "' AND longitude = '" + long + "'"
     print("About to execute query: " + query)
+
+    trend_query = "SELECT * FROM precipitation_trend where latitude = '" + lat + "' AND longitude = '" + long + "'"
+    print("About to execute query: " + trend_query)
 
     with db.connect() as conn:
         anomaly_data = conn.execute(query).fetchall()

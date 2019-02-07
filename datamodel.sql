@@ -9,6 +9,13 @@ CREATE TABLE precipitation (
     month         VARCHAR(40)    NOT NULL
 );
 
+CREATE TABLE precipitation_trend (
+    latitude      	VARCHAR(40)    NOT NULL,
+    longitude  	  	VARCHAR(40)    NOT NULL,
+    precipitation  	FLOAT          NOT NULL,
+    range         	VARCHAR(40)    NOT NULL
+);
+
 -- SELECT 'LOADING precipitation' as 'INFO';
 -- source load_precipitation.dump ;
 
