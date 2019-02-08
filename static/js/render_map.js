@@ -1,6 +1,5 @@
 accessToken = 'pk.eyJ1IjoicGFua2h1cmlrdW1hciIsImEiOiJjamZwbnV2OTcxdXB1MzBudnViY2p3aDEzIn0.Zf9ZkY05gz_Zsyen1W1FbA';
-var zooming = false;
-var coords, popup, placeName, image;
+var coords, placeName, image;
 var data = [];
 
 var mymap = L.map('map').setView([30.52, 18.34], 2.5);
@@ -11,6 +10,10 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
     id: 'mapbox.satellite',
     accessToken: accessToken
 }).addTo(mymap);
+
+url_base = 'https://storage.googleapis.com/noah-water.appspot.com/intensityLayer/{z}/{x}/{y}.png';
+image = L.tileLayer(url_base).setOpacity(0.7);
+image.addTo(mymap);
 
 var searchControl = L.Control.geocoder({
         defaultMarkGeocode: false
@@ -23,30 +26,14 @@ var searchControl = L.Control.geocoder({
              bbox.getSouthWest()
         ]).addTo(mymap);
         mymap.fitBounds(poly.getBounds());
+        mymap.flyTo([e.geocode.center.lat+1, e.geocode.center.lng], 8);
     });
 
 document.getElementById('geocoder').appendChild(searchControl.onAdd(mymap));
 
-function loadPrecipitationData(lat, lng) {
-	lat = (parseInt(Math.floor(lat/10)) * 10) + 10;
-	lng = (parseInt(Math.floor(lng/10)) * 10);
-	console.log(lat, lng);
-
-	lngsign = (lng < 0) ? 'W' : 'E';
-    latsign = (lat < 0) ? 'S' : 'N';
-
-	url_base = 'https://storage.googleapis.com/water-noah.appspot.com/image_tif/change_';
-    var image_url = url_base + Math.abs(lng) + lngsign + '_' + Math.abs(lat) + latsign + '.png';
-    var image_bounds = [[lat, lng], [lat - 10, lng + 10]];
-	image = L.imageOverlay(image_url, image_bounds).setOpacity(0.3);
-	image.addTo(mymap);
-}
-
 function findClosest(lngLat) {
     lng = lngLat.lng;
     lat = lngLat.lat;
-
-    loadPrecipitationData(lat, lng);
 
     lng_sign = (lng < 0) ? 'W' : 'E';
     lat_sign = (lat < 0) ? 'S' : 'N';
@@ -88,7 +75,7 @@ function findClosest(lngLat) {
                             name: 'Precipitation',
                             type: 'scatter'
                         }], {
-                            title: 'Precipitation Data for ' + placeName + ' (' + recreated_lng + lng_sign + ", " + recreated_lat + lat_sign + ')',
+                            title: 'Precipitation Data for ' + placeName + ' (' + recreated_lat + lat_sign + ", " + recreated_lng + lng_sign + ')',
                             xaxis: {title: 'Date Range'},
                             yaxis: {title: 'Precipitation Anomaly'},
                             height: 380
@@ -98,7 +85,6 @@ function findClosest(lngLat) {
             });
         }
     });
-    // createTable(recreated_lng, recreated_lat, lng_sign, lat_sign);
 }
 
 mymap.on('click', function(e) {
