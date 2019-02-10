@@ -1,6 +1,7 @@
 accessToken = 'pk.eyJ1IjoicGFua2h1cmlrdW1hciIsImEiOiJjamZwbnV2OTcxdXB1MzBudnViY2p3aDEzIn0.Zf9ZkY05gz_Zsyen1W1FbA';
 var coords, placeName, image;
 var data = [];
+layer = 1
 
 var mymap = L.map('map').setView([30.52, 18.34], 2.5);
 
@@ -10,10 +11,17 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
     id: 'mapbox.satellite',
     accessToken: accessToken
 }).addTo(mymap);
+turnLayers();
 
-url_base = 'https://storage.googleapis.com/noah-water.appspot.com/intensityLayer/{z}/{x}/{y}.png';
-image = L.tileLayer(url_base).setOpacity(0.7);
-image.addTo(mymap);
+function turnLayers() {
+	if (layer > 0) {
+		url_base = 'https://storage.googleapis.com/noah-water.appspot.com/intensityLayer/{z}/{x}/{-y}.png';
+		tileImage = L.tileLayer(url_base).setOpacity(0.7);
+		tileImage.addTo(mymap);
+	} else {
+		mymap.removeLayer(tileImage);
+	}
+}
 
 var searchControl = L.Control.geocoder({
         defaultMarkGeocode: false
@@ -102,6 +110,11 @@ $('#intro-bar').dialog({height: 350,
 						width: 700,
 						modal:true,
                         resizable: false});
+
+document.getElementById('layerButton').addEventListener('click', function() {
+	layer = layer * (-1);
+	turnLayers();
+})
 
 document.getElementById('zoomButton').addEventListener('click', function () {
     mymap.flyTo([30.52, 18.34], 2.5);
