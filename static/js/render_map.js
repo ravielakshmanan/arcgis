@@ -5,22 +5,39 @@ layer = 1
 
 var mymap = L.map('map').setView([30.52, 18.34], 2.5);
 
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+baseLayer = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
-    id: 'mapbox.satellite',
+    id: 'mapbox.streets',
     accessToken: accessToken
 }).addTo(mymap);
 turnLayers();
 
 function turnLayers() {
 	if (layer > 0) {
+		mymap.removeLayer(baseLayer)
+		baseLayer = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+		    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		    maxZoom: 18,
+		    id: 'mapbox.streets',
+		    accessToken: accessToken
+		}).addTo(mymap);
 		url_base = 'https://storage.googleapis.com/noah-water.appspot.com/intensityLayer/{z}/{x}/{-y}.png';
 		tileImage = L.tileLayer(url_base).setOpacity(0.7);
 		tileImage.addTo(mymap);
 	} else {
-		mymap.removeLayer(tileImage);
+		mymap.removeLayer(baseLayer)
+		baseLayer = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+		    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		    maxZoom: 18,
+		    id: 'mapbox.satellite',
+		    accessToken: accessToken
+		}).addTo(mymap);
+		url_base = 'https://storage.googleapis.com/noah-water.appspot.com/intensityLayer/{z}/{x}/{-y}.png';
+		tileImage = L.tileLayer(url_base).setOpacity(0.7);
+		tileImage.addTo(mymap);
 	}
+		
 }
 
 var searchControl = L.Control.geocoder({
