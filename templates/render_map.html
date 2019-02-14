@@ -27,14 +27,14 @@
 			<button id="backButton" class="back-button"> << Back to site</button>
 		</a>
 		<button id="zoomButton" class="zoom-button">Reset Map</button>
-		<button id="layerButton" class="layer-button">Toggle Layers</button>
+		<button id="layerButton" class="layer-button">Switch Terrain</button>
 		<div id='geocoder' class='geocoder'></div>
 
 		<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>	
 		<div id='intro-bar' title='Welcome to NOAH!'>
             Welcome! NOAH shows you changes in rainfall and surface water patterns over the last four decades from across the planet.
-            <br>
-            <br>
+			<br>
+			<br>
             To get started, you can enter a particular place into the search bar, or directly click on a location in the map to zoom in and activate a pop-up graph of the area’s rainfall fluctuations. The reds on the map highlight areas where the surface water has decreased while the greens indicate an increase. Black represents  water bodies which remain the same size. 
             <br>
             <br>
@@ -44,13 +44,13 @@
 			When the pop-up graph appears, you can zoom in to get month-by-month data. Hover your mouse over the graph until it turns into a plus sign, click and drag your mouse over the time-period you’d like to get more detailed information for.
 			<br>
 			<br>
-			The pop-up graph shows you a few different findings. The blue line depicts  how much monthly rainfall has deviated from the baseline average in that region for the last four decades. The green line shows TK, whereas the red line shows you the 100-year rainfall trend. 
+			The pop-up graph shows you a few different findings. The blue line depicts  how much monthly rainfall has deviated from the baseline average in that region for the last four decades. The green line shows TK, whereas the red line shows you the 100-year rainfall trend.
 			<br>
 			<br>
 			On the map itself, the red represents a decrease in the amount of surface water in the last three decades, while the green represents an increase.
 			<br>
 			<br>
-			Questions? Ping us at <a href="mailto:water.appspot@gmail.com">water.appspot@gmail.com.</a>
+			Questions? Ping us at <a href="mailto:water.appspot@gmail.com">water.appspot@gmail.com.</a>     
 		</div>
 		<script src="{{ url_for('static', filename='js/render_map.js') }}"></script>
 		<script src="{{ url_for('static', filename='js/materialize.js') }}"></script>

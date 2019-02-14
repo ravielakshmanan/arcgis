@@ -5,22 +5,39 @@ layer = 1
 
 var mymap = L.map('map').setView([30.52, 18.34], 2.5);
 
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+baseLayer = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
-    id: 'mapbox.satellite',
+    id: 'mapbox.streets',
     accessToken: accessToken
 }).addTo(mymap);
 turnLayers();
 
 function turnLayers() {
 	if (layer > 0) {
+		mymap.removeLayer(baseLayer)
+		baseLayer = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+		    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		    maxZoom: 18,
+		    id: 'mapbox.streets',
+		    accessToken: accessToken
+		}).addTo(mymap);
 		url_base = 'https://storage.googleapis.com/noah-water.appspot.com/intensityLayer/{z}/{x}/{-y}.png';
 		tileImage = L.tileLayer(url_base).setOpacity(0.7);
 		tileImage.addTo(mymap);
 	} else {
-		mymap.removeLayer(tileImage);
+		mymap.removeLayer(baseLayer)
+		baseLayer = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+		    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		    maxZoom: 18,
+		    id: 'mapbox.satellite',
+		    accessToken: accessToken
+		}).addTo(mymap);
+		url_base = 'https://storage.googleapis.com/noah-water.appspot.com/intensityLayer/{z}/{x}/{-y}.png';
+		tileImage = L.tileLayer(url_base).setOpacity(0.7);
+		tileImage.addTo(mymap);
 	}
+		
 }
 
 var searchControl = L.Control.geocoder({
@@ -101,12 +118,13 @@ mymap.on('click', function(e) {
     mymap.flyTo([e.latlng.lat+1, e.latlng.lng], 8);
     findClosest(e.latlng);
 
-    $("#side-bar").dialog({ position: { my: "right top", at: "right top", of: window},
+    $("#side-bar").dialog({ height: 750,
+    						position: { my: "right top", at: "right top", of: window},
     						classes: {"ui-dialog": "add-margin"}});
-    $("#side-bar").dialog('open');
+    // $("#side-bar").dialog('open');
 });
 
-$('#intro-bar').dialog({height: 350,
+$('#intro-bar').dialog({height: 400,
 						width: 700,
 						modal:true,
                         resizable: false});
