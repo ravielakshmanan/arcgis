@@ -118,12 +118,13 @@ mymap.on('click', function(e) {
     mymap.flyTo([e.latlng.lat+1, e.latlng.lng], 8);
     findClosest(e.latlng);
 
-    $("#side-bar").dialog({ position: { my: "right top", at: "right top", of: window},
+    $("#side-bar").dialog({ height: 750,
+    						position: { my: "right top", at: "right top", of: window},
     						classes: {"ui-dialog": "add-margin"}});
-    $("#side-bar").dialog('open');
+    // $("#side-bar").dialog('open');
 });
 
-$('#intro-bar').dialog({height: 350,
+$('#intro-bar').dialog({height: 400,
 						width: 700,
 						modal:true,
                         resizable: false});
