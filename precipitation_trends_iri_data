@@ -14,3 +14,5 @@ http://iridl.ldeo.columbia.edu/SOURCES/.UCSB/.CHIRPS/.v2p0/.monthly/.global/.pre
        sub
       :a
     T fig: red line blue line black line :fig
+
+http://iridl.ldeo.columbia.edu/ds:/SOURCES/.UCSB/.CHIRPS/.v2p0/.monthly/.global/.precipitation/T/%28Jul%201900%29%28Dec%202018%29RANGE/T/%28Jul-Sep%29seasonalAverage/a://name/%28precip%29def/:a:/T/132/runningAverage//name/%28smoothed%29def/:a:/:a:[T]detrend-bfl/sub//name/%28trend%29def/:a/:ds/mark/precip/T/%28Jul-Sep%201986%29VALUE/.T/precip/T/%28Jul-Sep%201986%29VALUE/T/removeGRID/smoothed/T/%28Jul-Sep%201986%29VALUE/T/removeGRID/trend/T/%28Jul-Sep%201986%29VALUE/T/removeGRID/table:/mark/:table/.html
