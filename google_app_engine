@@ -41,3 +41,7 @@ mkdir /cloudsql
 chmod 777 /cloudsql
 
 ./cloud_sql_proxy -dir=/cloudsql --instances="noah-water:us-east4:precipitation" --credential_file="./mysql_credentials.json"
+
+Run process launchctl
+launchctl load ~/Library/LaunchAgents/com.bobbob.osx.test.plist
+launchctl unload ~/Library/LaunchAgents/com.bobbob.osx.test.plist
