@@ -32,46 +32,74 @@ db = sqlalchemy.create_engine(
     pool_recycle=1800
 )
 
+def get_processed_trend_data(trends):
+    processed_data_dict = defaultdict(list)
+
+    iri_data_list = []
+    for date, long, lat, prec, smoothed, trend in trends:
+        date = date.replace('\r', '')
+        coords = "(" + long + ", " + lat + ")"
+        data_tuple = (coords, prec, smoothed, trend, date)
+        iri_data_list.append(data_tuple)
+
+    print("The size of the data list: " + str(len(iri_data_list)))
+
+    for coords, prec, smoothed, trend, date in iri_data_list:
+        if coords not in processed_data_dict:
+            temp_dict = {'dates': [date], 'prec': [prec], 'smoothed': [smoothed], 'trend': [trend]}
+            processed_data_dict[coords] = temp_dict
+        else:
+            processed_data_dict[coords]['dates'].append(date)
+            processed_data_dict[coords]['prec'].append(prec)
+            processed_data_dict[coords]['smoothed'].append(prec)
+            processed_data_dict[coords]['trend'].append(prec)
+
+    return processed_data_dict 
+
 def get_processed_data(data):
-  processed_data_dict = defaultdict(list)
-  
-  iri_data_list = []
-  for lat, long, anomaly, date in data:
-    date = date.replace('\r', '')
-    coords = "(" + long + ", " + lat + ")"
-    anomaly = anomaly
-    date = date[8:]
-    data_tuple = (coords, anomaly, date)
-    iri_data_list.append(data_tuple)
+    processed_data_dict = defaultdict(list)
 
-  print("The size of the data list: " + str(len(iri_data_list)))
+    iri_data_list = []
+    for lat, long, anomaly, date in data:
+        date = date.replace('\r', '')
+        coords = "(" + long + ", " + lat + ")"
+        anomaly = anomaly
+        date = date[8:]
+        data_tuple = (coords, anomaly, date)
+        iri_data_list.append(data_tuple)
 
-  for coords, anomaly, date in iri_data_list:
-    if coords not in processed_data_dict:
-        temp_dict = {'dates': [date], 'data': [anomaly]}
-        processed_data_dict[coords] = temp_dict
-    else:
-        processed_data_dict[coords]['dates'].append(date)
-        processed_data_dict[coords]['data'].append(anomaly)
+    print("The size of the data list: " + str(len(iri_data_list)))
 
-  return processed_data_dict
+    for coords, anomaly, date in iri_data_list:
+        if coords not in processed_data_dict:
+            temp_dict = {'dates': [date], 'data': [anomaly]}
+            processed_data_dict[coords] = temp_dict
+        else:
+            processed_data_dict[coords]['dates'].append(date)
+            processed_data_dict[coords]['data'].append(anomaly)
+
+    return processed_data_dict
 
 def get_iri_data_from_gcloud(long, lat):
     
     query = "SELECT * FROM precipitation where latitude = '" + lat + "' AND longitude = '" + long + "'"
     print("About to execute query: " + query)
 
-    trend_query = "SELECT * FROM precipitation_trend where latitude = '" + lat + "' AND longitude = '" + long + "'"
+    # trend_query = "SELECT * FROM precipitation_trend where latitude = '4.175S' AND longitude = '81.05W'"
+    # trend_query = "SELECT * FROM precipitation_trend where latitude = '" + lat + "' AND longitude = '" + long + "'"
     print("About to execute query: " + trend_query)
 
     with db.connect() as conn:
         anomaly_data = conn.execute(query).fetchall()
+        trend_data = conn.execute(trend_query).fetchall()
 
-        print("The size of data returned: " + str(len(anomaly_data)))
+        print("The size of anomaly data returned: " + str(len(anomaly_data)))
+        print("The size of trend data returned: " + str(len(trend_data)))
 
         processed_data_dict = get_processed_data(anomaly_data)
+        processed_trend_dict = get_processed_trend_data(trend_data)
 
-    return processed_data_dict
+    return processed_data_dict, processed_trend_dict
 
 @app.route('/')
 def load_home():
@@ -89,12 +117,18 @@ def open_dataviz():
     latSign = request.args.get('latSign')
     lngSign = request.args.get('lngSign')
 
-    iri_data = get_iri_data_from_gcloud(lng + lngSign, lat + latSign)
+    iri_data, trend_data = get_iri_data_from_gcloud(lng + lngSign, lat + latSign)
 
     key = '(' + lng + lngSign + ', ' + lat + latSign + ')'
     print("The coordinates passed are: " + key)
+    
+    # if (key in iri_data) AND (key in trend_data):
     if key in iri_data:
-        return str(iri_data[key])
+        iri_str = str(iri_data[key])
+        # key = '(81.05W, 4.175S)'
+        trend_str = str(trend_data[key])
+        viz_data = iri_str + "_" + trend_str
+        return str(viz_data)
     
     print("No match found!")    
     return "-1"

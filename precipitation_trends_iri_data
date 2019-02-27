@@ -1,0 +1,18 @@
+http://iridl.ldeo.columbia.edu/SOURCES/.UCSB/.CHIRPS/.v2p0/.monthly/.global/.precipitation/X/-20/40/RANGE/Y/10/20/RANGE/%5BX/Y%5Daverage/T/(Jul%201900)/(Sep%202014%20)/RANGE/T/(Jul-Sep)/seasonalAverage/a%3A/%3Aa%3A/T/120/runningAverage/T/6/shiftdata/%3Aa%3A/%3Aa%3A/%5BT%5Ddetrend-bfl/sub/%3Aa/T/fig%3A/red/line/blue/line/black/line/%3Afig/?fbclid=IwAR3ZcaFRuiwuxkuTH43lcSIBF1Sc4zAUGWOCJ37jGUoYNpseKSlOK1Ah-LI#expert
+
+ SOURCES .UCSB .CHIRPS .v2p0 .monthly .global .precipitation
+  X -20 40 RANGE
+  Y 10 20 RANGE
+  [X Y]average
+  T (Jul 1900) (Dec 2018) RANGE
+  T (Jul-Sep) seasonalAverage
+  a: :a:
+     T 120 runningAverage
+     T 6 shiftdata
+     :a: :a:
+       [T]detrend-bfl
+       sub
+      :a
+    T fig: red line blue line black line :fig
+
+http://iridl.ldeo.columbia.edu/ds:/SOURCES/.UCSB/.CHIRPS/.v2p0/.monthly/.global/.precipitation/T/%28Jul%201900%29%28Dec%202018%29RANGE/T/%28Jul-Sep%29seasonalAverage/a://name/%28precip%29def/:a:/T/132/runningAverage//name/%28smoothed%29def/:a:/:a:[T]detrend-bfl/sub//name/%28trend%29def/:a/:ds/mark/precip/T/%28Jul-Sep%201986%29VALUE/.T/precip/T/%28Jul-Sep%201986%29VALUE/T/removeGRID/smoothed/T/%28Jul-Sep%201986%29VALUE/T/removeGRID/trend/T/%28Jul-Sep%201986%29VALUE/T/removeGRID/table:/mark/:table/.html

@@ -83,8 +83,16 @@ function findClosest(lngLat) {
         type: 'GET',
         data: coordData,
         success: function (res) {
-            new_res = res.replace(/'/g, '"');
-            result = JSON.parse(new_res);
+            data_array = res.split("_");
+            iri_data = data_array[0];
+            trend_data = data_array[1];
+
+            iri_data = iri_data.replace(/'/g, '"');
+            iri_data = JSON.parse(iri_data);
+
+            trend_data = trend_data.replace(/'/g, '"');
+            trend_data = JSON.parse(trend_data);
+
             $.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=' + lngLat.lat + '&lon=' + lngLat.lng, function(geores) {
                 console.log(geores);
                 if (geores['display_name'])
@@ -92,18 +100,60 @@ function findClosest(lngLat) {
                 else
                     placeName = "<br>";
                 var marker = new L.Marker(coords)
-                    .bindPopup('<div id="iri-graph"></div>', {maxWidth: "auto", offset: [-350, 0]})
+                    .bindPopup('<div id="iri-graph"></div><div id="trend-graph"></div>', {maxWidth: "auto", offset: [-350, 0]})
                     .on('popupopen', function (e) {
                         Plotly.newPlot('iri-graph', [{
-                            x: result['dates'],
-                            y: result['data'],
-                            name: 'Precipitation',
+                            x: iri_data['dates'],
+                            y: iri_data['data'],
+                            name: 'Precipitation (mm)',
                             type: 'scatter'
                         }], {
                             title: 'Precipitation Data for ' + placeName + ' (' + recreated_lat + lat_sign + ", " + recreated_lng + lng_sign + ')',
                             xaxis: {title: 'Date Range'},
-                            yaxis: {title: 'Precipitation Anomaly'},
+                            yaxis: {title: 'Precipitation Anomaly (mm)'},
                             height: 380
+                        });
+
+                        var trace1 = {
+                          x: trend_data['dates'],
+                          y: trend_data['prec'],
+                          name: 'Precipitation (mm/year)',
+                          type: 'scatter'
+                        };
+                        
+                        var trace2 = {
+                          x: trend_data['dates'],
+                          y: trend_data['smoothed'],
+                          name: 'Smoothed Precipitation (mm/year)',
+                          yaxis: 'y2',
+                          type: 'scatter',
+                          mode: 'lines',
+                            line: {
+                                dash: 'dashdot',
+                                width: 4
+                            }
+                        };
+
+                        var trace3 = {
+                          x: trend_data['dates'],
+                          y: trend_data['trend'],
+                          name: 'Precipitation Trend (mm/year)',
+                          yaxis: 'y3',
+                          type: 'scatter',
+                          mode: 'lines',
+                            line: {
+                                dash: 'dot',
+                                width: 4
+                            },
+                        };
+
+                        var data = [trace1, trace2, trace3];
+
+                        Plotly.newPlot('trend-graph', data, {
+                            title: 'Average Annual Precipitation Shifts',
+                            xaxis: {title: 'Year'},
+                            yaxis: {title: 'Average Annual Precipitation (mm/year)'},
+                            height: 500
                         });
                     }).addTo(mymap);
                 marker.openPopup();
@@ -118,12 +168,13 @@ mymap.on('click', function(e) {
     mymap.flyTo([e.latlng.lat+1, e.latlng.lng], 8);
     findClosest(e.latlng);
 
-    $("#side-bar").dialog({ position: { my: "right top", at: "right top", of: window},
+    $("#side-bar").dialog({ height: 750,
+    						position: { my: "right top", at: "right top", of: window},
     						classes: {"ui-dialog": "add-margin"}});
-    $("#side-bar").dialog('open');
+    // $("#side-bar").dialog('open');
 });
 
-$('#intro-bar').dialog({height: 350,
+$('#intro-bar').dialog({height: 400,
 						width: 700,
 						modal:true,
                         resizable: false});
