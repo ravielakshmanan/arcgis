@@ -100,7 +100,8 @@ function findClosest(lngLat) {
                 else
                     placeName = "<br>";
                 var marker = new L.Marker(coords)
-                    .bindPopup('<div id="iri-graph"></div><div id="trend-graph"></div>', {maxWidth: "auto", offset: [-350, 0]})
+                    .bindPopup('<div style="height:900px"><div id="iri-graph"></div><div id="trend-graph"></div></div>',
+                        {'maxWidth': "auto", offset: [-350, 0], 'maxHeight': "400"})
                     .on('popupopen', function (e) {
                         Plotly.newPlot('iri-graph', [{
                             x: iri_data['dates'],
@@ -144,7 +145,7 @@ function findClosest(lngLat) {
                             line: {
                                 dash: 'dot',
                                 width: 4
-                            },
+                            }
                         };
 
                         var data = [trace1, trace2, trace3];
@@ -156,6 +157,7 @@ function findClosest(lngLat) {
                             height: 500
                         });
                     }).addTo(mymap);
+                marker.getPopup().update();
                 marker.openPopup();
             });
         }
@@ -186,9 +188,8 @@ document.getElementById('layerButton').addEventListener('click', function() {
 
 document.getElementById('zoomButton').addEventListener('click', function () {
     mymap.flyTo([30.52, 18.34], 2.5);
-    $(".leaflet-popup-close-button")[0].click();
     $('#side-bar').dialog('destroy');
-    if (mymap.hasLayer(image)) {
-		mymap.removeLayer(image);
-	}
+    if (!$("#leaflet-popup").length === 0) {
+        $(".leaflet-popup-close-button")[0].click();
+    }
 });
