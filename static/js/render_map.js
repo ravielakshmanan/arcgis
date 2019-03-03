@@ -189,7 +189,7 @@ document.getElementById('layerButton').addEventListener('click', function() {
 document.getElementById('zoomButton').addEventListener('click', function () {
     mymap.flyTo([30.52, 18.34], 2.5);
     $('#side-bar').dialog('destroy');
-    if (!$("#leaflet-popup").length === 0) {
+    if ($("#leaflet-popup")) {
         $(".leaflet-popup-close-button")[0].click();
     }
 });
