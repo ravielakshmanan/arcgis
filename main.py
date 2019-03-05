@@ -85,7 +85,7 @@ def get_iri_data_from_gcloud(long, lat):
     query = "SELECT * FROM precipitation where latitude = '" + lat + "' AND longitude = '" + long + "'"
     print("About to execute query: " + query)
 
-    #trend_query = "SELECT * FROM precipitation_trend where latitude = '4.175S' AND longitude = '81.05W'"
+    # trend_query = "SELECT * FROM precipitation_trend where latitude = '4.175S' AND longitude = '81.05W'"
     trend_query = "SELECT * FROM precipitation_trend where latitude = '" + lat + "' AND longitude = '" + long + "'"
     print("About to execute query: " + trend_query)
 

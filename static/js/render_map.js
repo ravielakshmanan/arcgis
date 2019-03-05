@@ -92,6 +92,7 @@ function findClosest(lngLat) {
 
             trend_data = trend_data.replace(/'/g, '"');
             trend_data = JSON.parse(trend_data);
+            console.log(trend_data);
 
             $.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=' + lngLat.lat + '&lon=' + lngLat.lng, function(geores) {
                 console.log(geores);
@@ -115,45 +116,54 @@ function findClosest(lngLat) {
                             height: 380
                         });
 
-                        var trace1 = {
+                        var prec = {
                           x: trend_data['dates'],
                           y: trend_data['prec'],
                           name: 'Precipitation (mm/year)',
-                          type: 'scatter'
+                          type: 'scatter',
+                          connectgaps: true
                         };
                         
-                        var trace2 = {
+                        var smoothed = {
                           x: trend_data['dates'],
                           y: trend_data['smoothed'],
                           name: 'Smoothed Precipitation (mm/year)',
                           yaxis: 'y2',
                           type: 'scatter',
-                          mode: 'lines',
+                          connectgaps: true,
+                          mode: 'lines+markers',
                             line: {
                                 dash: 'dashdot',
                                 width: 4
                             }
                         };
 
-                        var trace3 = {
+                        var trend = {
                           x: trend_data['dates'],
                           y: trend_data['trend'],
                           name: 'Precipitation Trend (mm/year)',
                           yaxis: 'y3',
                           type: 'scatter',
-                          mode: 'lines',
+                          connectgaps: true,
+                          mode: 'lines+markers',
                             line: {
                                 dash: 'dot',
                                 width: 4
                             }
                         };
 
-                        var data = [trace1, trace2, trace3];
+                        var data = [prec, smoothed, trend];
 
                         Plotly.newPlot('trend-graph', data, {
                             title: 'Average Annual Precipitation Shifts',
                             xaxis: {title: 'Year'},
                             yaxis: {title: 'Average Annual Precipitation (mm/year)'},
+                            yaxis2: {
+                                overlaying: 'y',
+                            },
+                            yaxis3: {
+                                overlaying: 'y',
+                            },
                             height: 500
                         });
                     }).addTo(mymap);

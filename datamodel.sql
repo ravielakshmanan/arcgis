@@ -40,3 +40,5 @@ CREATE TABLE precipitation_trend (
 -- INSERT INTO precipitation_trend VALUES ('100W','35.025N', '1988', 45.8329);
 -- INSERT INTO precipitation_trend VALUES ('100W','35.025N', '1989', 50.67971);
 -- INSERT INTO precipitation_trend VALUES ('100W','35.025N', '1990', 51.57405);
+
+select longitude, latitude, count(*) from precipitation_trend group by longitude, latitude LIMIT 20;

@@ -29,19 +29,20 @@ client = storage.Client()
 
 bucket = client.get_bucket('noah-water.appspot.com')
 
-blobs = bucket.list_blobs(prefix='trend_data')
+blobs = bucket.list_blobs(prefix='trends3/Part6')
 
-with db.connect() as conn:
-	for blob in blobs:
-		print(blob)
-		downloaded_blob = blob.download_as_string().decode('utf-8') 
-		blob_list = downloaded_blob.split('\n')
-		for row in blob_list:
-			row_data = row.split(',')
-			if row_data[0] != 'placeholder' and row_data[0] != 'Time':
-				print(row_data)
-				row_data[3] = '0' if not row_data[3] else row_data[3]
-				row_data[4] = '0' if not row_data[4] else row_data[4]
-				row_data[5] = '0' if not row_data[5] else row_data[5]
-				query = """INSERT INTO precipitation_trend values (%s, %s, %s, %s, %s, %s)"""
+for blob in blobs:
+	print(blob)
+	downloaded_blob = blob.download_as_string().decode('utf-8') 
+	blob_list = downloaded_blob.split('\n')
+	for row in blob_list:
+		row_data = row.split(',')
+		if row_data[0] != 'placeholder' and row_data[0] != 'Time':
+			print(row_data)
+			row_data[3] = '0' if not row_data[3] else row_data[3]
+			row_data[4] = '0' if not row_data[4] else row_data[4]
+			row_data[5] = '0' if not row_data[5] else row_data[5]
+			query = """INSERT INTO precipitation_trend values (%s, %s, %s, %s, %s, %s)"""
+			with db.connect() as conn:
 				conn.execute(query, (row_data[0], row_data[1], row_data[2], float(row_data[3]), float(row_data[4]), float(row_data[5])))
+				conn.close()
