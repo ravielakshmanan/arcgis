@@ -53,9 +53,6 @@ var searchControl = L.Control.geocoder({
         ]).addTo(mymap);
         mymap.fitBounds(poly.getBounds());
         mymap.flyTo([e.geocode.center.lat+1, e.geocode.center.lng], 8);
-
-        findClosestTrendCoordinate(e.geocode);
-
     });
 
 document.getElementById('geocoder').appendChild(searchControl.onAdd(mymap));
@@ -85,42 +82,6 @@ function findClosestLatitude(lat) {
     return new_lat;
 }
 
-function findClosestTrendCoordinate(geocode) {
-    lat = geocode.center.lat;
-    lng = geocode.center.lng;
-
-    lng_sign = (lng < 0) ? 'W' : 'E';
-    lat_sign = (lat < 0) ? 'S' : 'N';
-
-    lng = (lng < 0) ? lng*(-1) : lng;
-    lat = (lat < 0) ? lat*(-1) : lat;
-
-    x = Math.round(1 + (lng - 1.25)/2.5);
-    y = Math.round(1 + (lat - 1.25)/2.5);
-    
-    recreated_lng = 1.25 + (x - 1) * 2.5;
-    recreated_lat = 1.25 + (y - 1) * 2.5;
-
-    recreated_lng_trend = round(lng, 0.15);
-    recreated_lat_trend = findClosestLatitude(lat);
-
-    lngLat = {
-        'lat': lat,
-        'lng': lng
-    };
-
-    coordData = {
-        'lat': recreated_lat,
-        'lng': recreated_lng,
-        'latT': recreated_lat_trend,
-        'lngT': recreated_lng_trend,
-        'latSign': lat_sign,
-        'lngSign': lng_sign
-    };
-
-    renderGraph(lngLat, coordData);
-}
-
 function findClosest(lngLat) {
     lng = lngLat.lng;
     lat = lngLat.lat;
@@ -138,7 +99,7 @@ function findClosest(lngLat) {
     recreated_lng = 1.25 + (x - 1) * 2.5;
     recreated_lat = 1.25 + (y - 1) * 2.5;
 
-    recreated_lng_trend = round(lng, 0.05);
+    recreated_lng_trend = round(recreated_lng, 0.05);
     recreated_lat_trend = findClosestLatitude(lat);
     
     coordData = {
