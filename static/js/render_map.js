@@ -149,7 +149,10 @@ function renderGraph(lngLat, coordData) {
                             type: 'scatter'
                         }], {
                             title: 'Precipitation Data for ' + placeName + ' (' + recreated_lat + lat_sign + ", " + recreated_lng + lng_sign + ')',
-                            xaxis: {title: 'Date Range'},
+                            xaxis: {
+                                title: 'Date Range',
+                                tickangle: 45
+                            },
                             yaxis: {title: 'Precipitation Anomaly (mm)'},
                             height: 380
                         });
@@ -159,7 +162,12 @@ function renderGraph(lngLat, coordData) {
                           y: trend_data['prec'],
                           name: 'Precipitation (mm/year)',
                           type: 'scatter',
-                          connectgaps: true
+                          connectgaps: true,
+                          mode: 'lines+markers',
+                          line: {
+                            color: 'rgb(31, 119, 180)',
+                            width: 3
+                          }
                         };
                         
                         var smoothed = {
@@ -172,7 +180,8 @@ function renderGraph(lngLat, coordData) {
                           mode: 'lines+markers',
                             line: {
                                 dash: 'dashdot',
-                                width: 4
+                                color: 'rgb(255, 127, 14)',
+                                width: 3
                             }
                         };
 
@@ -186,7 +195,8 @@ function renderGraph(lngLat, coordData) {
                           mode: 'lines+markers',
                             line: {
                                 dash: 'dot',
-                                width: 4
+                                color: 'rgb(61, 229, 109)',
+                                width: 3
                             }
                         };
 
@@ -194,15 +204,35 @@ function renderGraph(lngLat, coordData) {
 
                         Plotly.newPlot('trend-graph', data, {
                             title: 'Average Annual Precipitation Shifts',
-                            xaxis: {title: 'Year'},
-                            yaxis: {title: 'Average Annual Precipitation (mm/year)'},
+                            xaxis: {
+                                title: 'Year',
+                                tickangle: 45
+                            },
+                            yaxis: {
+                                title: 'Average Annual Precipitation (mm/year)',
+                                tickfont: {color: '#1f77b4'},
+                            },
                             yaxis2: {
+                                tickfont: {color: '#ff7f0e'},
                                 overlaying: 'y',
+                                anchor: 'x',
+                                side: 'right',
+                                showticklabels: false
                             },
                             yaxis3: {
+                                tickfont: {color: '#3de56d'},
                                 overlaying: 'y',
+                                anchor: 'free',
+                                side: 'right',
+                                position: 0.85,
+                                showticklabels: false
                             },
-                            height: 500
+                            legend: {
+                                "orientation": "h",
+                                x: 0,
+                                y: -0.5
+                            },
+                            height: 550
                         });
                     }).addTo(mymap);
                 marker.getPopup().update();
