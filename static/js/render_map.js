@@ -210,22 +210,24 @@ function renderGraph(lngLat, coordData) {
                             },
                             yaxis: {
                                 title: 'Average Annual Precipitation (mm/year)',
-                                tickfont: {color: '#1f77b4'},
+                                // tickfont: {color: '#1f77b4'},
                             },
                             yaxis2: {
-                                tickfont: {color: '#ff7f0e'},
+                                // tickfont: {color: '#ff7f0e'},
                                 overlaying: 'y',
                                 anchor: 'x',
                                 side: 'right',
-                                showticklabels: false
+                                showticklabels: false,
+                                showgrid: false
                             },
                             yaxis3: {
-                                tickfont: {color: '#3de56d'},
+                                // tickfont: {color: '#3de56d'},
                                 overlaying: 'y',
                                 anchor: 'free',
                                 side: 'right',
                                 position: 0.85,
-                                showticklabels: false
+                                showticklabels: false,
+                                showgrid: false
                             },
                             legend: {
                                 "orientation": "h",
