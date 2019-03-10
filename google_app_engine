@@ -45,3 +45,6 @@ chmod 777 /cloudsql
 Run process launchctl
 launchctl load ~/Library/LaunchAgents/com.bobbob.osx.test.plist
 launchctl unload ~/Library/LaunchAgents/com.bobbob.osx.test.plist
+
+Run:
+python -u import_files.py >> output1  2>> error1 &
