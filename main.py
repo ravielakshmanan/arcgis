@@ -4,6 +4,8 @@ import logging
 from flask import Flask, render_template, redirect, request, url_for
 import datetime, json
 from collections import defaultdict
+from collections import OrderedDict
+from operator import itemgetter
 
 app = Flask(__name__)
 
@@ -34,6 +36,7 @@ db = sqlalchemy.create_engine(
 
 def get_processed_trend_data(trends):
     processed_data_dict = defaultdict(list)
+    trends = sorted(trends,key=itemgetter(0))
 
     iri_data_list = []
     for date, long, lat, prec, smoothed, trend in trends:
@@ -54,10 +57,13 @@ def get_processed_trend_data(trends):
             processed_data_dict[coords]['smoothed'].append(smoothed)
             processed_data_dict[coords]['trend'].append(trend)
 
-    return processed_data_dict 
+    sorted_dict = OrderedDict(sorted(processed_data_dict.items(), key=lambda t: t[0]))
+
+    return sorted_dict 
 
 def get_processed_data(data):
     processed_data_dict = defaultdict(list)
+    data = sorted(data,key=itemgetter(0))
 
     iri_data_list = []
     for lat, long, anomaly, date in data:
@@ -78,7 +84,9 @@ def get_processed_data(data):
             processed_data_dict[coords]['dates'].append(date)
             processed_data_dict[coords]['data'].append(anomaly)
 
-    return processed_data_dict
+    sorted_dict = OrderedDict(sorted(processed_data_dict.items(), key=lambda t: t[0]))
+
+    return sorted_dict
 
 def get_iri_data_from_gcloud(long, lat, longT, latT):
     
