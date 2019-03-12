@@ -200,7 +200,7 @@ function renderGraph(lngLat, coordData) {
                             }
                         };
 
-                        var data = [prec, smoothed, trend];
+                        var data = [prec, smoothed];
 
                         Plotly.newPlot('trend-graph', data, {
                             title: 'Average Annual Precipitation Shifts',
@@ -211,7 +211,7 @@ function renderGraph(lngLat, coordData) {
                             yaxis: {
                                 title: 'Average Annual Precipitation (mm/year)',
                                 tickfont: {color: '#1f77b4'},
-                                showgrid: false
+                                showgrid: true
                             },
                             yaxis2: {
                                 tickfont: {color: '#ff7f0e'},
@@ -222,15 +222,15 @@ function renderGraph(lngLat, coordData) {
                                 showticklabels: true,
                                 showgrid: false
                             },
-                            yaxis3: {
-                                tickfont: {color: '#3de56d'},
-                                overlaying: 'y',
-                                anchor: 'free',
-                                side: 'right',
-                                position: 1.7,
-                                showticklabels: true,
-                                showgrid: false
-                            },
+                            // yaxis3: {
+                            //     tickfont: {color: '#3de56d'},
+                            //     overlaying: 'y',
+                            //     anchor: 'free',
+                            //     side: 'right',
+                            //     position: 1.7,
+                            //     showticklabels: true,
+                            //     showgrid: false
+                            // },
                             legend: {
                                 "orientation": "h",
                                 x: 0,
