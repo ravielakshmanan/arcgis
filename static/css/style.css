@@ -125,13 +125,13 @@ body {
 
 .ui-dialog .ui-dialog-content {
     font-family: 'EB Garamond', serif !important;
-    font-size: 20px !important;
+    font-size: 18px !important;
     background: none repeat scroll 0 0 transparent;
     border: 0 none;
     overflow: auto;
     position: relative;
     padding: 1.5em;
-    text-align: center;
+    text-align: left;
 }
 
 .ui-widget-header {

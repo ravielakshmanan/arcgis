@@ -85,8 +85,6 @@ function findClosestLatitude(lat) {
 function findClosest(lngLat) {
     lng = lngLat.lng;
     lat = lngLat.lat;
-    console.log(lat);
-    console.log(lng);
 
     lng_sign = (lng < 0) ? 'W' : 'E';
     lat_sign = (lat < 0) ? 'S' : 'N';
@@ -134,8 +132,12 @@ function renderGraph(lngLat, coordData) {
 
             $.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=' + lngLat.lat + '&lon=' + lngLat.lng, function(geores) {
                 console.log(geores);
+                loc = geores['display_name'];
+                loc_array = loc.split(", ");
+                place = loc_array[1];
+                country = loc_array[loc_array.length-1];
                 if (geores['display_name'])
-                    placeName = "<br>" + geores['display_name'] + "<br>";
+                    placeName = "<br>" + place + ", " + country + "<br>";
                 else
                     placeName = "<br>";
                 var marker = new L.Marker(coords)
@@ -256,10 +258,12 @@ mymap.on('click', function(e) {
     $("#side-bar").dialog({ height: 750,
     						position: { my: "right top", at: "right top", of: window},
     						classes: {"ui-dialog": "add-margin"}});
+    $('#side-bar').scrollTop(0);
+    $(window).scrollTop(0);
     // $("#side-bar").dialog('open');
 });
 
-$('#intro-bar').dialog({height: 400,
+$('#intro-bar').dialog({height: 450,
 						width: 700,
 						modal:true,
                         resizable: false});

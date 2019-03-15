@@ -93,7 +93,6 @@ def get_iri_data_from_gcloud(long, lat, longT, latT):
     query = "SELECT * FROM precipitation where latitude = '" + lat + "' AND longitude = '" + long + "'"
     print("About to execute query: " + query)
 
-    # trend_query = "SELECT * FROM precipitation_trend where latitude = '4.175S' AND longitude = '81.05W'"
     # trend_query = "SELECT * FROM precipitation_trend where latitude = '25.575N' AND longitude = '91.85E' and time_range in ('Jul-Sep 1981','Jul-Sep 1982','Jul-Sep 1983','Jul-Sep 1984','Jul-Sep 1985','Jul-Sep 1986','Jul-Sep 1987','Jul-Sep 1988','Jul-Sep 1989','Jul-Sep 1990','Jul-Sep 1991','Jul-Sep 1992','Jul-Sep 1993','Jul-Sep 1994','Jul-Sep 1995','Jul-Sep 1996','Jul-Sep 1997','Jul-Sep 1998','Jul-Sep 1999','Jul-Sep 2000','Jul-Sep 2001','Jul-Sep 2002','Jul-Sep 2003','Jul-Sep 2004','Jul-Sep 2005','Jul-Sep 2006','Jul-Sep 2007','Jul-Sep 2008','Jul-Sep 2009','Jul-Sep 2010','Jul-Sep 2011','Jul-Sep 2012','Jul-Sep 2013','Jul-Sep 2014','Jul-Sep 2015','Jul-Sep 2016','Jul-Sep 2017','Jul-Sep 2018')"
     trend_query = "SELECT * FROM precipitation_trend where latitude = '" + latT + "' AND longitude = '" + longT + "' and time_range in ('Jul-Sep 1981','Jul-Sep 1982','Jul-Sep 1983','Jul-Sep 1984','Jul-Sep 1985','Jul-Sep 1986','Jul-Sep 1987','Jul-Sep 1988','Jul-Sep 1989','Jul-Sep 1990','Jul-Sep 1991','Jul-Sep 1992','Jul-Sep 1993','Jul-Sep 1994','Jul-Sep 1995','Jul-Sep 1996','Jul-Sep 1997','Jul-Sep 1998','Jul-Sep 1999','Jul-Sep 2000','Jul-Sep 2001','Jul-Sep 2002','Jul-Sep 2003','Jul-Sep 2004','Jul-Sep 2005','Jul-Sep 2006','Jul-Sep 2007','Jul-Sep 2008','Jul-Sep 2009','Jul-Sep 2010','Jul-Sep 2011','Jul-Sep 2012','Jul-Sep 2013','Jul-Sep 2014','Jul-Sep 2015','Jul-Sep 2016','Jul-Sep 2017','Jul-Sep 2018')"
     print("About to execute query: " + trend_query)
@@ -138,9 +137,11 @@ def open_dataviz():
     # if (key in iri_data) AND (key in trend_data):
     if key in iri_data:
         iri_str = str(iri_data[key])
-        # key = '(81.05W, 4.175S)'
-        # key = '(91.95E, 25.575N)'
-        trend_str = str(trend_data[keyT])
+        # keyT = '(91.95E, 25.575N)'
+        if keyT in trend_data:
+            trend_str = str(trend_data[keyT])
+        else:
+            trend_str = ""
         viz_data = iri_str + "_" + trend_str
         return str(viz_data)
     
