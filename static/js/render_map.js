@@ -205,13 +205,13 @@ function renderGraph(lngLat, coordData) {
                         var data = [prec, smoothed];
 
                         Plotly.newPlot('trend-graph', data, {
-                            title: 'Average Annual Precipitation Shifts for ' + placeName + ' (' + recreated_lat + lat_sign + ", " + recreated_lng + lng_sign + ')',
+                            title: 'Average Seasonal Precipitation Shifts for ' + placeName + ' (' + recreated_lat + lat_sign + ", " + recreated_lng + lng_sign + ')',
                             xaxis: {
                                 title: 'Year',
                                 tickangle: 45
                             },
                             yaxis: {
-                                title: 'Average Annual Precipitation (mm/year)',
+                                title: 'Average Seasonal Precipitation (mm/month)',
                                 tickfont: {color: '#1f77b4'},
                                 showgrid: true
                             },
